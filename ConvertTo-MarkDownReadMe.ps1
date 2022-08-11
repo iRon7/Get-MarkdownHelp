@@ -92,7 +92,7 @@ foreach ($Parameter in $Parameters) {
     if ($Null -ne $Attributes.MinRange -and $Null -ne $Attributes.MaxRange)   { "| Accepted range:             | $($Attributes.MinRange) - $($Attributes.MaxRange) |" }
     elseif ($Null -ne $Attributes.MinRange)                                   { "| Minimal value:              | $($Attributes.MinRange) |" }
     elseif ($Null -ne $Attributes.MaxRange)                                   { "| Maximal value:              | $($Attributes.MaxRange) |" }
-    if ($Null -ne $Attributes.ScriptBlock)                                    { "| Accepted script condition:  | ``$($Attributes.ScriptBlock -replace '[\r\n]+', ' ')`` |" }
+    if ($Null -ne $Attributes.ScriptBlock)                                    { "| Accepted script condition:  | ``$($Attributes.ScriptBlock.ToString().Trim() -Split '\s*[\r?\n]\s*' -Join '; ')`` |" }
     if ($Null -ne $Attributes.ValidValues)                                    { "| Accepted values:            | $($Attributes.ValidValues -Join ', ') |" }
     $TypeName = $Parameter.parameterValue
     $TypeUri = 'https://docs.microsoft.com/en-us/dotnet/api/' + $Command.Parameters[$Parameter.Name].ParameterType.FullName

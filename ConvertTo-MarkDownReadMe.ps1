@@ -3,6 +3,9 @@ using namespace System.Management.Automation
 [CmdletBinding(DefaultParameterSetName='Html')][OutputType([Object[]])] param(
     [Parameter(ValueFromPipeLine = $True, Mandatory = $True)][String]$CommandName
 )
+
+Add-Type -AssemblyName System.Web
+
 function Text($String) {
     if ($String) {
         $Indent0 = $Null
@@ -12,13 +15,13 @@ function Text($String) {
             $Trim = $Line.Trim()
             $Indent = if ($Line -Match '^\w*') { '^' + $Matches[0] } else { '^' }
             if ($Null -eq $Indent0 -and $Trim) { $Indent0 = $Indent }
-            if ($Indent -ne $Indent0 -or $Trim -Match '^[*-]\w|\d+[\.\)]') { $NewLine = $True }
-            if ($Text.Length) {
-                if ($NewLine) { [void]$Text.AppendLine() } else { [void]$Text.Append(' ') }
-            }
-            [void]$Text.Append($Trim)
-            $NewLine = !$Trim -or $Trim[-1] -in '.', '?', '!'
+            if ($Indent -ne $Indent0 -or $Trim -Match '^[*-\>]\w|\d+[\.\)]') { $NewLine = $True }
+            if ($Text.Length -and $NewLine) { [void]$Text.AppendLine('  ') } else { [void]$Text.Append(' ') }
+            $MDEncode = [System.Web.HttpUtility]::HtmlEncode($Trim)
+            [void]$Text.Append($MDEncode)
+            $NewLine = $Line -match '  $'
         }
+        [void]$Text.AppendLine()
         $Text.ToString()
     }
 }
@@ -65,7 +68,7 @@ foreach ($Example in $Examples) {
     else {
         "### $($Example.Title)"
     }
-    if ($Example.Introduction.Text -ne 'PS >') { $Example.Introduction.Text }
+    if ($Example.Introduction.Text -notmatch '^PS.*\>$') { $Example.Introduction.Text }
     '```PowerShell'
     $Example.Code
     '```' #'
@@ -89,7 +92,7 @@ foreach ($Parameter in $Parameters) {
     if ($Null -ne $Attributes.MinRange -and $Null -ne $Attributes.MaxRange)   { "| Accepted range:             | $($Attributes.MinRange) - $($Attributes.MaxRange) |" }
     elseif ($Null -ne $Attributes.MinRange)                                   { "| Minimal value:              | $($Attributes.MinRange) |" }
     elseif ($Null -ne $Attributes.MaxRange)                                   { "| Maximal value:              | $($Attributes.MaxRange) |" }
-    if ($Null -ne $Attributes.ScriptBlock)                                    { "| Accepted script condition:  | ``$($Attributes.ScriptBlock)`` |" }
+    if ($Null -ne $Attributes.ScriptBlock)                                    { "| Accepted script condition:  | ``$($Attributes.ScriptBlock -replace '[\r\n]+', ' ')`` |" }
     if ($Null -ne $Attributes.ValidValues)                                    { "| Accepted values:            | $($Attributes.ValidValues -Join ', ') |" }
     $TypeName = $Parameter.parameterValue
     $TypeUri = 'https://docs.microsoft.com/en-us/dotnet/api/' + $Command.Parameters[$Parameter.Name].ParameterType.FullName
@@ -100,4 +103,3 @@ foreach ($Parameter in $Parameters) {
     "| Accept pipeline input:      | $($Parameter.pipelineInput) |"
     "| Accept wildcard characters: | $($Parameter.globbing) |"
 }
-

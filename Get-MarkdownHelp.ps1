@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 0.9.0
+.VERSION 0.9.3
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -34,15 +34,20 @@ String[]
     You can also pipe objects to ConvertTo-CSV.
 
 .EXAMPLE
-    PS> .\Get-MarkdownHelp Show-MarkDown |Out-String |Show-Markdown -UseBrowser
+    PS> Get-MarkdownHelp Show-MarkDown |Out-String |Show-Markdown -UseBrowser
 
     This command shows a markdown formatted help of the `Show-MarkDown` cmdlet in the default browser.
 
 .EXAMPLE
     PS> Get-MarkdownHelp Get-Content |Clip
 
-    This command will create a markdown readme string for the Get-Content cmdlet and put it on the clipboard
+    This command creates a markdown readme string for the Get-Content cmdlet and put it on the clipboard
     to be used e.g. pasting it into a GitHub readme file.
+
+.EXAMPLE
+    PS> Get-MarkdownHelp .\MyScript.ps1 |Set-Content .\Readme.md
+
+    This command creates a markdown readme string for the .\MyScript.ps1 script and saves it in Readme.md.
 
 .LINK
     https://github.com/iRon7/Get-MarkdownHelp
@@ -77,6 +82,19 @@ function Text($String) {
     }
 }
 
+function GetTypeLink($TypeName) {
+    $Type = $TypeName -as [Type]
+    if ($Type) {
+        $TypeName = $Type.Name
+        $TypeUri = 'https://docs.microsoft.com/en-us/dotnet/api/' + $Type.FullName
+        "[$TypeName]($TypeUri)"
+    }
+    else {
+        $TypeName
+    }
+}
+
+
 $Command = Get-Command $CommandName
 $Help = Get-Help -Detailed $CommandName
 
@@ -85,7 +103,7 @@ $Name = [System.IO.Path]::GetFileNameWithoutExtension($Command.Name)
 "# $Name"
 $Help.Synopsis
 
-'## Syntax'
+'## [Syntax](#syntax)'
 foreach ($SyntaxItem in $Help.Syntax.syntaxItem) {
         '```PowerShell'
     $Name
@@ -107,11 +125,11 @@ foreach ($SyntaxItem in $Help.Syntax.syntaxItem) {
     '```'
 }
 
-'## Description'
+'## [Description](#description)'
 Text $Help.Description.Text
 
 $Examples = $Help.Examples.Example
-if ($Examples) { '## Examples' }
+if ($Examples) { '## [Examples](exampls)' }
 foreach ($Example in $Examples) {
     if ($Example.Title -Match '^-+ EXAMPLE (\d)+ -+$') {
         "### Example $($Matches[1])"
@@ -129,7 +147,7 @@ foreach ($Example in $Examples) {
 }
 
 $Parameters = $Help.parameters.parameter
-if ($Parameters) { '## Parameters' }
+if ($Parameters) { '## [Parameters](#parameters)' }
 foreach ($Parameter in $Parameters) {
     "### ``-$($Parameter.Name)``"
     Text $Parameter.Description.Text
@@ -145,12 +163,31 @@ foreach ($Parameter in $Parameters) {
     elseif ($Null -ne $Attributes.MaxRange)                                   { "| Maximal value:              | $($Attributes.MaxRange) |" }
     if ($Null -ne $Attributes.ScriptBlock)                                    { "| Accepted script condition:  | ``$($Attributes.ScriptBlock.ToString().Trim() -Split '\s*[\r?\n]\s*' -Join '; ')`` |" }
     if ($Null -ne $Attributes.ValidValues)                                    { "| Accepted values:            | $($Attributes.ValidValues -Join ', ') |" }
-    $TypeName = $Parameter.parameterValue
-    $TypeUri = 'https://docs.microsoft.com/en-us/dotnet/api/' + $Command.Parameters[$Parameter.Name].ParameterType.FullName
-    "| Type:                       | [$TypeName]($TypeUri) |"
+    "| Type:                       | $(GetTypeLink($Parameter.parameterValue)) |"
     if ($Attributes.Aliases) { "| Aliases:                    | $(Attributes.Aliases -Join ', ') |" }
     "| Position:                   | $($Parameter.Position) |"
     "| Default value:              | $($Parameter.defaultValue) |"
     "| Accept pipeline input:      | $($Parameter.pipelineInput) |"
     "| Accept wildcard characters: | $($Parameter.globbing) |"
+}
+
+$InputTypes = $Help.inputTypes.inputType
+if ($InputTypes) { '## [Inputs](#inputs)' }
+foreach ($InputType in $InputTypes) {
+    "### $(GetTypeLink($InputType.Type.Name))"
+    Text $Parameter.Description.Text
+}
+
+$ReturnValues = $Help.returnValues.returnValue
+if ($ReturnValues) { '## [Outputs](#outputs)' }
+foreach ($ReturnValue in $ReturnValues) {
+    "### $(GetTypeLink($ReturnValue.Type.Name))"
+}
+
+$Links = $Help.relatedLinks.navigationLink
+if ($Links) { '## [Related Links](#related-links)' }
+foreach ($link in $Links) {
+    $Uri = $Link.uri # Bug: https://github.com/PowerShell/PowerShell/issues/17901
+    $LinkText = if ($Link.linkText) { $Link.linkText } else { ([Uri]$Uri).Segments[-1] }
+    "* [$linkText]($Uri)"
 }

@@ -44,4 +44,4 @@ Get-MarkdownHelp .\MyScript.ps1 |Set-Content .\Readme.md
 ## [Outputs](#outputs)
 ### [String[]](https://docs.microsoft.com/en-us/dotnet/api/System.String[])
 ## [Related Links](#related-links)
-* [](https://github.com/iRon7/Get-MarkdownHelp)
+* [Get-MarkdownHelp](https://github.com/iRon7/Get-MarkdownHelp)

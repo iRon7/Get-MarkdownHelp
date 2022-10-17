@@ -55,7 +55,7 @@ You can also pipe objects to ConvertTo-CSV.
 | Accept wildcard characters: | False |
 
 ### `-Delimiter`
-Specifies the delimiter to separate the property values in CSV strings. The default is a comma (,).
+Specifies the delimiter to separate the property values in CSV strings. The default is a comma (,).\
 Enter a character, such as a colon (:). To specify a semicolon (;) enclose it in single quotation marks.
 
 List

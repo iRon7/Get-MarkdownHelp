@@ -18,9 +18,10 @@ Get-MarkdownHelp Show-MarkDown |Out-String |Show-Markdown -UseBrowser
  This command shows a markdown formatted help of the `Show-MarkDown` cmdlet in the default browser.
 
 ### Example 2
-```PowerShell
-Get-MarkdownHelp Get-Content |Clip
-```
+The following example copies the markdown help to the clipboard:
+
+    Get-MarkdownHelp Get-Content |Clip
+
  This command creates a markdown readme string for the Get-Content cmdlet and put it on the clipboard  
 to be used e.g. pasting it into a GitHub readme file.
 

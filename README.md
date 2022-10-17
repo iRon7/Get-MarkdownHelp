@@ -20,7 +20,9 @@ Get-MarkdownHelp Show-MarkDown |Out-String |Show-Markdown -UseBrowser
 ### Example 2
 The following example copies the markdown help to the clipboard:
 
-    Get-MarkdownHelp Get-Content |Clip
+```PowerShell
+Get-MarkdownHelp Get-Content |Clip
+```
 
  This command creates a markdown readme string for the Get-Content cmdlet and put it on the clipboard  
 to be used e.g. pasting it into a GitHub readme file.

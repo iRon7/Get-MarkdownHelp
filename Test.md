@@ -2,7 +2,7 @@
 Formats (aligns) a Csv table
 
 ## [Syntax](#syntax)
-```Console
+```C
 Test
     [-InputObject] <Object>
     [[-Delimiter] <char>]

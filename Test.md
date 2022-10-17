@@ -2,7 +2,7 @@
 Formats (aligns) a Csv table
 
 ## [Syntax](#syntax)
-```yaml
+```javascript
 Test
     [-InputObject] <Object>
     [[-Delimiter] <char>]

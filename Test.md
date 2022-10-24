@@ -52,10 +52,10 @@ You can also pipe objects to ConvertTo-CSV.
 
 | Name:                       | InputObject |
 | :-------------------------- | :---- |
-| Type:                       | [Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object) |
-| Position:                   | 0 |
+| Type:                       |  |
+| Position:                   | Named |
 | Default value:              |  |
-| Accept pipeline input:      | False |
+| Accept pipeline input:      |  |
 | Accept wildcard characters: | False |
 
 ### `-Delimiter <Object>`
@@ -69,8 +69,8 @@ List
 
 | Name:                       | Delimiter |
 | :-------------------------- | :---- |
-| Type:                       | [Char](https://docs.microsoft.com/en-us/dotnet/api/System.Char) |
-| Position:                   | 1 |
+| Type:                       | [Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object) |
+| Position:                   | 0 |
 | Default value:              | ',' |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
@@ -80,9 +80,8 @@ List
 
 | Name:                       | ValidateCount |
 | :-------------------------- | :---- |
-| Accepted length             | 1 - 2 |
-| Type:                       | [Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32) |
-| Position:                   | 2 |
+| Type:                       | [Char](https://docs.microsoft.com/en-us/dotnet/api/System.Char) |
+| Position:                   | 1 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
@@ -94,7 +93,7 @@ List
 | :-------------------------- | :---- |
 | Accepted length             | 1 - 2 |
 | Type:                       | [Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32) |
-| Position:                   | 3 |
+| Position:                   | 2 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
@@ -104,9 +103,9 @@ List
 
 | Name:                       | ValidatePattern |
 | :-------------------------- | :---- |
-| Accepted pattern:           | `^[a-z]+$` |
-| Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
-| Position:                   | 4 |
+| Accepted length             | 1 - 2 |
+| Type:                       | [Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32) |
+| Position:                   | 3 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
@@ -116,9 +115,9 @@ List
 
 | Name:                       | ValidateRange |
 | :-------------------------- | :---- |
-| Accepted range:             | 1 - 9 |
-| Type:                       | [Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32) |
-| Position:                   | 5 |
+| Accepted pattern:           | `^[a-z]+$` |
+| Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
+| Position:                   | 4 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
@@ -128,9 +127,9 @@ List
 
 | Name:                       | ValidateScript |
 | :-------------------------- | :---- |
-| Accepted script condition:  | `$_ -eq 20` |
-| Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
-| Position:                   | 6 |
+| Accepted range:             | 1 - 9 |
+| Type:                       | [Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32) |
+| Position:                   | 5 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
@@ -146,9 +145,9 @@ each individual cell that contains a number type (e.g. integer) will also aligne
 
 | Name:                       | ValidateSet |
 | :-------------------------- | :---- |
-| Accepted values:            | Auto, Left, Right |
+| Accepted script condition:  | `$_ -eq 20` |
 | Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
-| Position:                   | 7 |
+| Position:                   | 6 |
 | Default value:              | 'Auto' |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
@@ -158,8 +157,9 @@ each individual cell that contains a number type (e.g. integer) will also aligne
 
 | Name:                       | SupportsWildcards |
 | :-------------------------- | :---- |
+| Accepted values:            | Auto, Left, Right |
 | Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
-| Position:                   | 8 |
+| Position:                   | 7 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | True |
@@ -170,8 +170,8 @@ Quotes all the headers and values. If the Quote switch is set, all the delimeter
 
 | Name:                       | Quote |
 | :-------------------------- | :---- |
-| Type:                       | [SwitchParameter](https://docs.microsoft.com/en-us/dotnet/api/System.Management.Automation.SwitchParameter) |
-| Position:                   | Named |
+| Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
+| Position:                   | 8 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
@@ -187,8 +187,8 @@ Footnote
 
 | Name:                       | Code |
 | :-------------------------- | :---- |
-| Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
-| Position:                   | 9 |
+| Type:                       | [SwitchParameter](https://docs.microsoft.com/en-us/dotnet/api/System.Management.Automation.SwitchParameter) |
+| Position:                   | Named |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
@@ -205,7 +205,7 @@ Footnote
 | Name:                       | Fenced |
 | :-------------------------- | :---- |
 | Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
-| Position:                   | 10 |
+| Position:                   | 9 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
@@ -221,7 +221,7 @@ Test2 () {
 | Name:                       | PSCode |
 | :-------------------------- | :---- |
 | Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
-| Position:                   | 11 |
+| Position:                   | 10 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |

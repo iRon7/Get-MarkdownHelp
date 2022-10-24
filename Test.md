@@ -1,8 +1,7 @@
 # Test
 Formats (aligns) a Csv table
-
 ## [Syntax](#syntax)
-```javascript
+```JavaScript
 Test
     [-InputObject] <Object>
     [[-Delimiter] <char>]
@@ -13,15 +12,18 @@ Test
     [[-ValidateScript] <string>]
     [[-ValidateSet] <string>]
     [[-SupportsWildcards] <string>]
+    [[-Code] <string>]
+    [[-Fenced] <string>]
+    [[-PSCode] <string>]
     [-Quote]
-    [-Fenced]
     [<CommonParameters>]
 ```
 ## [Description](#description)
 This cmdlet makes a Csv file or list better human readable by aligning the columns in a way that the resulted
 Csv format is still a valid as input for the ConvertFrom-Csv cmdlet.
-
 ## [Examples](#examples)
+### Example 1: Named Example
+```PowerShell
 $Csv = @'
 "Name","Number","Object","Remark"
 "One","1","Text","Normal"
@@ -40,21 +42,9 @@ Three,      3, "Te,xt",  "Comma in Text"
 Four,       4, "Te""xt", "Double quote in text"
 ,            , ,         "Empty ($Null)"
 Five,       5, More,     Normal
-
-Text
-```PowerShell
-text
 ```
-Text
-
-Text
-
-```PowerShell
-text
-```
-
-Text
-
+### Example 2:
+Another example
 ## [Parameter](#parameter)
 ### `-InputObject`
 Specifies the CSV strings to be formatted or the objects that are converted to CSV formatted strings.
@@ -69,7 +59,7 @@ You can also pipe objects to ConvertTo-CSV.
 | Accept wildcard characters: | False |
 
 ### `-Delimiter`
-Specifies the delimiter to separate the property values in CSV strings. The default is a comma (,).\
+Specifies the delimiter to separate the property values in CSV strings. The default is a comma (,).
 Enter a character, such as a colon (:). To specify a semicolon (;) enclose it in single quotation marks.
 
 List
@@ -87,6 +77,7 @@ List
 
 ### `-ValidateCount`
 
+
 | Name:                       | ValidateCount |
 | --------------------------- | ----- |
 | Accepted length             | 1 - 2 |
@@ -97,6 +88,7 @@ List
 | Accept wildcard characters: | False |
 
 ### `-ValidateLength`
+
 
 | Name:                       | ValidateLength |
 | --------------------------- | ----- |
@@ -109,6 +101,7 @@ List
 
 ### `-ValidatePattern`
 
+
 | Name:                       | ValidatePattern |
 | --------------------------- | ----- |
 | Accepted pattern:           | `^[a-z]+$` |
@@ -120,6 +113,7 @@ List
 
 ### `-ValidateRange`
 
+
 | Name:                       | ValidateRange |
 | --------------------------- | ----- |
 | Accepted range:             | 1 - 9 |
@@ -130,6 +124,7 @@ List
 | Accept wildcard characters: | False |
 
 ### `-ValidateScript`
+
 
 | Name:                       | ValidateScript |
 | --------------------------- | ----- |
@@ -160,6 +155,7 @@ each individual cell that contains a number type (e.g. integer) will also aligne
 
 ### `-SupportsWildcards`
 
+
 | Name:                       | SupportsWildcards |
 | --------------------------- | ----- |
 | Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
@@ -169,7 +165,7 @@ each individual cell that contains a number type (e.g. integer) will also aligne
 | Accept wildcard characters: | True |
 
 ### `-Quote`
-Quotes all the headers and values. If the Quote switch is set, all the delimeters are aligned.
+Quotes all the headers and values. If the Quote switch is set, all the delimeters are aligned.  
 (By default, each value is directly followed by a delimiter for compatibility reasons.)
 
 | Name:                       | Quote |
@@ -180,8 +176,24 @@ Quotes all the headers and values. If the Quote switch is set, all the delimeter
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
 
+### `-Code`
+This shows some Fenced code:
+```PowerShell
+Test () {
+    Write-Host 'test'
+}
+```
+Footnote
+
+| Name:                       | Code |
+| --------------------------- | ----- |
+| Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
+| Position:                   | 9 |
+| Default value:              |  |
+| Accept pipeline input:      | False |
+| Accept wildcard characters: | False |
+
 ### `-Fenced`
-xxxx```
 This shows some Fenced code:
 ```Console
 Test () {
@@ -192,22 +204,33 @@ Footnote
 
 | Name:                       | Fenced |
 | --------------------------- | ----- |
-| Type:                       | [SwitchParameter](https://docs.microsoft.com/en-us/dotnet/api/System.Management.Automation.SwitchParameter) |
-| Position:                   | Named |
+| Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
+| Position:                   | 10 |
+| Default value:              |  |
+| Accept pipeline input:      | False |
+| Accept wildcard characters: | False |
+
+### `-PSCode`
+This shows some PS > prefixed code:
+```PowerShell
+Test2 () {
+    Write-Host 'test'
+}
+```
+
+| Name:                       | PSCode |
+| --------------------------- | ----- |
+| Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
+| Position:                   | 11 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
 
 ## [Inputs](#Inputs)
 Csv (here) string or object list
-
 ## [Outputs](#Outputs)
 ```PowerShell
-    String[]
+String[]
 ```
-
 ## [Related Links](#Related Links)
-```PowerShell
-    https://github.com/iRon7/Format-Csv
-```
-#>
+https://github.com/iRon7/Format-Csv

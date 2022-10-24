@@ -52,13 +52,13 @@ You can also pipe objects to ConvertTo-CSV.
 
 | Name:                       | InputObject |
 | :-------------------------- | :---- |
-| Type:                       |  |
+| Type:                       | [Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object) |
 | Position:                   | 0 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
 
-### `-Delimiter <[Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object)>`
+### `-Delimiter <Object>`
 Specifies the delimiter to separate the property values in CSV strings. The default is a comma (,).
 Enter a character, such as a colon (:). To specify a semicolon (;) enclose it in single quotation marks.
 
@@ -69,25 +69,25 @@ List
 
 | Name:                       | Delimiter |
 | :-------------------------- | :---- |
-| Type:                       | [Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object) |
+| Type:                       | [Char](https://docs.microsoft.com/en-us/dotnet/api/System.Char) |
 | Position:                   | 1 |
 | Default value:              | ',' |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
 
-### `-ValidateCount <[Char](https://docs.microsoft.com/en-us/dotnet/api/System.Char)>`
+### `-ValidateCount <Char>`
 
 
 | Name:                       | ValidateCount |
 | :-------------------------- | :---- |
 | Accepted length             | 1 - 2 |
-| Type:                       | [Char](https://docs.microsoft.com/en-us/dotnet/api/System.Char) |
+| Type:                       | [Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32) |
 | Position:                   | 2 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
 
-### `-ValidateLength <[Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32)>`
+### `-ValidateLength <Int32>`
 
 
 | Name:                       | ValidateLength |
@@ -99,43 +99,43 @@ List
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
 
-### `-ValidatePattern <[Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32)>`
+### `-ValidatePattern <Int32>`
 
 
 | Name:                       | ValidatePattern |
 | :-------------------------- | :---- |
 | Accepted pattern:           | `^[a-z]+$` |
-| Type:                       | [Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32) |
+| Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
 | Position:                   | 4 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
 
-### `-ValidateRange <[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)>`
+### `-ValidateRange <String>`
 
 
 | Name:                       | ValidateRange |
 | :-------------------------- | :---- |
 | Accepted range:             | 1 - 9 |
-| Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
+| Type:                       | [Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32) |
 | Position:                   | 5 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
 
-### `-ValidateScript <[Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32)>`
+### `-ValidateScript <Int32>`
 
 
 | Name:                       | ValidateScript |
 | :-------------------------- | :---- |
 | Accepted script condition:  | `$_ -eq 20` |
-| Type:                       | [Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32) |
+| Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
 | Position:                   | 6 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
 
-### `-ValidateSet <[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)>`
+### `-ValidateSet <String>`
 Specifies the alignment of the columns
 * Left  - to align all the columns to the left
 * Right - to align all the columns to the Right
@@ -153,7 +153,7 @@ each individual cell that contains a number type (e.g. integer) will also aligne
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
 
-### `-SupportsWildcards <[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)>`
+### `-SupportsWildcards <String>`
 
 
 | Name:                       | SupportsWildcards |
@@ -164,19 +164,19 @@ each individual cell that contains a number type (e.g. integer) will also aligne
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | True |
 
-### `-Quote <[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)>`
+### `-Quote <String>`
 Quotes all the headers and values. If the Quote switch is set, all the delimeters are aligned.  
 (By default, each value is directly followed by a delimiter for compatibility reasons.)
 
 | Name:                       | Quote |
 | :-------------------------- | :---- |
-| Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
+| Type:                       | [SwitchParameter](https://docs.microsoft.com/en-us/dotnet/api/System.Management.Automation.SwitchParameter) |
 | Position:                   | Named |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
 
-### `-Code <[SwitchParameter](https://docs.microsoft.com/en-us/dotnet/api/System.Management.Automation.SwitchParameter)>`
+### `-Code`
 This shows some Fenced code:
 ```PowerShell
 Test () {
@@ -187,13 +187,13 @@ Footnote
 
 | Name:                       | Code |
 | :-------------------------- | :---- |
-| Type:                       | [SwitchParameter](https://docs.microsoft.com/en-us/dotnet/api/System.Management.Automation.SwitchParameter) |
+| Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
 | Position:                   | 9 |
 | Default value:              |  |
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
 
-### `-Fenced <[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)>`
+### `-Fenced <String>`
 This shows some Fenced code:
 ```Console
 Test () {
@@ -210,7 +210,7 @@ Footnote
 | Accept pipeline input:      | False |
 | Accept wildcard characters: | False |
 
-### `-PSCode <[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)>`
+### `-PSCode <String>`
 This shows some PS > prefixed code:
 ```PowerShell
 Test2 () {

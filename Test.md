@@ -51,7 +51,7 @@ Specifies the CSV strings to be formatted or the objects that are converted to C
 You can also pipe objects to ConvertTo-CSV.
 
 | Name:                       | InputObject |
-| --------------------------- | ----- |
+| :-------------------------- | :---- |
 | Type:                       | [Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object) |
 | Position:                   | 0 |
 | Default value:              |  |
@@ -68,7 +68,7 @@ List
 3
 
 | Name:                       | Delimiter |
-| --------------------------- | ----- |
+| :-------------------------- | :---- |
 | Type:                       | [Char](https://docs.microsoft.com/en-us/dotnet/api/System.Char) |
 | Position:                   | 1 |
 | Default value:              | ',' |
@@ -79,7 +79,7 @@ List
 
 
 | Name:                       | ValidateCount |
-| --------------------------- | ----- |
+| :-------------------------- | :---- |
 | Accepted length             | 1 - 2 |
 | Type:                       | [Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32) |
 | Position:                   | 2 |
@@ -91,7 +91,7 @@ List
 
 
 | Name:                       | ValidateLength |
-| --------------------------- | ----- |
+| :-------------------------- | :---- |
 | Accepted length             | 1 - 2 |
 | Type:                       | [Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32) |
 | Position:                   | 3 |
@@ -103,7 +103,7 @@ List
 
 
 | Name:                       | ValidatePattern |
-| --------------------------- | ----- |
+| :-------------------------- | :---- |
 | Accepted pattern:           | `^[a-z]+$` |
 | Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
 | Position:                   | 4 |
@@ -115,7 +115,7 @@ List
 
 
 | Name:                       | ValidateRange |
-| --------------------------- | ----- |
+| :-------------------------- | :---- |
 | Accepted range:             | 1 - 9 |
 | Type:                       | [Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32) |
 | Position:                   | 5 |
@@ -127,7 +127,7 @@ List
 
 
 | Name:                       | ValidateScript |
-| --------------------------- | ----- |
+| :-------------------------- | :---- |
 | Accepted script condition:  | `$_ -eq 20` |
 | Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
 | Position:                   | 6 |
@@ -145,7 +145,7 @@ When autmatic alignment is set, the whole column is aligned to the right if all 
 each individual cell that contains a number type (e.g. integer) will also aligned to the right.
 
 | Name:                       | ValidateSet |
-| --------------------------- | ----- |
+| :-------------------------- | :---- |
 | Accepted values:            | Auto, Left, Right |
 | Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
 | Position:                   | 7 |
@@ -157,7 +157,7 @@ each individual cell that contains a number type (e.g. integer) will also aligne
 
 
 | Name:                       | SupportsWildcards |
-| --------------------------- | ----- |
+| :-------------------------- | :---- |
 | Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
 | Position:                   | 8 |
 | Default value:              |  |
@@ -169,7 +169,7 @@ Quotes all the headers and values. If the Quote switch is set, all the delimeter
 (By default, each value is directly followed by a delimiter for compatibility reasons.)
 
 | Name:                       | Quote |
-| --------------------------- | ----- |
+| :-------------------------- | :---- |
 | Type:                       | [SwitchParameter](https://docs.microsoft.com/en-us/dotnet/api/System.Management.Automation.SwitchParameter) |
 | Position:                   | Named |
 | Default value:              |  |
@@ -186,7 +186,7 @@ Test () {
 Footnote
 
 | Name:                       | Code |
-| --------------------------- | ----- |
+| :-------------------------- | :---- |
 | Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
 | Position:                   | 9 |
 | Default value:              |  |
@@ -203,7 +203,7 @@ Test () {
 Footnote
 
 | Name:                       | Fenced |
-| --------------------------- | ----- |
+| :-------------------------- | :---- |
 | Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
 | Position:                   | 10 |
 | Default value:              |  |
@@ -219,7 +219,7 @@ Test2 () {
 ```
 
 | Name:                       | PSCode |
-| --------------------------- | ----- |
+| :-------------------------- | :---- |
 | Type:                       | [String](https://docs.microsoft.com/en-us/dotnet/api/System.String) |
 | Position:                   | 11 |
 | Default value:              |  |

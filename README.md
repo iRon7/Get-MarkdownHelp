@@ -232,7 +232,7 @@ Csv (here) string or object list
 ```PowerShell
 String[]
 ```
-## [Related Links](#Related Links)
+## [Related Links](#RelatedLinks)
 * https://github.com/iRon7/Format-Csv
 * [Test](https://en.wikipedia.org/wiki/Integer)
 * 1: https://www.linguee.nl/engels-nederlands/vertaling/automatic+alignment.html

@@ -37,7 +37,7 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 
 
 <table>
-<tr><td>Type:</td><td>[Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object)</td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">Object</a></td></tr>
 <tr><td>Position:</td><td>0</td></tr>
 <tr><td>Default value:</td><td></td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
@@ -50,7 +50,7 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 
 
 <table>
-<tr><td>Type:</td><td>[Char](https://docs.microsoft.com/en-us/dotnet/api/System.Char)</td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Char">Char</a></td></tr>
 <tr><td>Position:</td><td>1</td></tr>
 <tr><td>Default value:</td><td>','</td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
@@ -62,7 +62,7 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 
 <table>
 <tr><td>Accepted length:</td><td>-1</td></tr>
-<tr><td>Type:</td><td>[Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32)</td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Int32">Int32</a></td></tr>
 <tr><td>Position:</td><td>2</td></tr>
 <tr><td>Default value:</td><td></td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
@@ -74,7 +74,7 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 
 <table>
 <tr><td>Accepted length:</td><td>-1</td></tr>
-<tr><td>Type:</td><td>[Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32)</td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Int32">Int32</a></td></tr>
 <tr><td>Position:</td><td>3</td></tr>
 <tr><td>Default value:</td><td></td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
@@ -85,8 +85,8 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 
 
 <table>
-<tr><td>Accepted pattern:</td><td>`^[a-z]+$`</td></tr>
-<tr><td>Type:</td><td>[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)</td></tr>
+<tr><td>Accepted pattern:</td><td><code>^[a-z]+$</code></td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
 <tr><td>Position:</td><td>4</td></tr>
 <tr><td>Default value:</td><td></td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
@@ -98,7 +98,7 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 
 <table>
 <tr><td>Accepted range:</td><td>-8</td></tr>
-<tr><td>Type:</td><td>[Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32)</td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Int32">Int32</a></td></tr>
 <tr><td>Position:</td><td>5</td></tr>
 <tr><td>Default value:</td><td></td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
@@ -109,8 +109,8 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 
 
 <table>
-<tr><td>Accepted script condition:</td><td>`$_ -eq 20`</td></tr>
-<tr><td>Type:</td><td>[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)</td></tr>
+<tr><td>Accepted script condition:</td><td><code>$_ -eq 20</code></td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
 <tr><td>Position:</td><td>6</td></tr>
 <tr><td>Default value:</td><td></td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
@@ -124,7 +124,7 @@ each individual cell that contains a number type (e.g. [integer][2]) will also a
 
 <table>
 <tr><td>Accepted values:</td><td>Auto, Left, Right</td></tr>
-<tr><td>Type:</td><td>[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)</td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
 <tr><td>Position:</td><td>7</td></tr>
 <tr><td>Default value:</td><td>'Auto'</td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
@@ -135,7 +135,7 @@ each individual cell that contains a number type (e.g. [integer][2]) will also a
 
 
 <table>
-<tr><td>Type:</td><td>[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)</td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
 <tr><td>Position:</td><td>8</td></tr>
 <tr><td>Default value:</td><td></td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
@@ -147,7 +147,7 @@ each individual cell that contains a number type (e.g. [integer][2]) will also a
 
 
 <table>
-<tr><td>Type:</td><td>[SwitchParameter](https://docs.microsoft.com/en-us/dotnet/api/System.Management.Automation.SwitchParameter)</td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Management.Automation.SwitchParameter">SwitchParameter</a></td></tr>
 <tr><td>Position:</td><td>Named</td></tr>
 <tr><td>Default value:</td><td></td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
@@ -161,7 +161,7 @@ Footnote
 
 
 <table>
-<tr><td>Type:</td><td>[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)</td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
 <tr><td>Position:</td><td>9</td></tr>
 <tr><td>Default value:</td><td></td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
@@ -180,7 +180,7 @@ Footnote
 
 
 <table>
-<tr><td>Type:</td><td>[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)</td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
 <tr><td>Position:</td><td>10</td></tr>
 <tr><td>Default value:</td><td></td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
@@ -192,7 +192,7 @@ Footnote
 
 
 <table>
-<tr><td>Type:</td><td>[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)</td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
 <tr><td>Position:</td><td>11</td></tr>
 <tr><td>Default value:</td><td></td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>

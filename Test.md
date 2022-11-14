@@ -1,5 +1,6 @@
 # Test.ps1
-```
+Formats (aligns) a Csv table
+
 ## [Syntax](#syntax)
 ```JavaScript
 Test.ps1
@@ -18,34 +19,22 @@ Test.ps1
     [-Quote]
     [<CommonParameters>]
 ```
+
 ## [Description](#description)
-```
-```
+Csv format is still a valid as input for the [`ConvertFrom-Csv`](https://go.microsoft.com/fwlink/?LinkID=2096830) cmdlet.
+
 ## [Examples](#examples)
 ### Example 1: Named Example
-```
-```
-```
-```
-```
-```
-```
-```
-```
-```
-```
-```
-```
-```
-```
-```
-```
+
+Five,       5, More,     Normal
+
 ### Example 2:
-```
+Another example
+
 ## [Parameter](#parameter)
 ### `-InputObject <Object>`
-```
-```
+You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?LinkID=2096832).
+
 
 <table>
 <tr><td>Type:</td><td>[Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object)</td></tr>
@@ -56,12 +45,9 @@ Test.ps1
 </table>
 
 ### `-Delimiter <Char>`
-```
-```
-```
-```
-```
-```
+
+3
+
 
 <table>
 <tr><td>Type:</td><td>[Char](https://docs.microsoft.com/en-us/dotnet/api/System.Char)</td></tr>
@@ -132,12 +118,9 @@ Test.ps1
 </table>
 
 ### `-ValidateSet <String>`
-```
-```
-```
-```
-```
-```
+
+each individual cell that contains a number type (e.g. [integer][2]) will also aligned to the right.
+
 
 <table>
 <tr><td>Accepted values:</td><td>Auto, Left, Right</td></tr>
@@ -160,8 +143,8 @@ Test.ps1
 </table>
 
 ### `-Quote`
-```
-```
+(By default, each value is directly followed by a delimiter for compatibility reasons.)
+
 
 <table>
 <tr><td>Type:</td><td>[SwitchParameter](https://docs.microsoft.com/en-us/dotnet/api/System.Management.Automation.SwitchParameter)</td></tr>
@@ -172,11 +155,10 @@ Test.ps1
 </table>
 
 ### `-Code <String>`
-```
-```
-```
-```
-```
+
+
+Footnote
+
 
 <table>
 <tr><td>Type:</td><td>[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)</td></tr>
@@ -187,17 +169,15 @@ Test.ps1
 </table>
 
 ### `-Fenced <String>`
-```
 This shows some Fenced code:
 
 ```Console
 Test () {
-```
-```
+Write-Host 'test'
 }
-
 ```
 Footnote
+
 
 <table>
 <tr><td>Type:</td><td>[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)</td></tr>
@@ -208,10 +188,8 @@ Footnote
 </table>
 
 ### `-PSCode <String>`
-```
-```
-```
-```
+}
+
 
 <table>
 <tr><td>Type:</td><td>[String](https://docs.microsoft.com/en-us/dotnet/api/System.String)</td></tr>
@@ -222,9 +200,11 @@ Footnote
 </table>
 
 ## [Inputs](#Inputs)
-```
+Csv (here) string or object list
+
 ## [Outputs](#Outputs)
-```
+String[]
+
 ## [Related Links](#RelatedLinks)
 * https://github.com/iRon7/Format-Csv
 * [Test](https://en.wikipedia.org/wiki/Integer)

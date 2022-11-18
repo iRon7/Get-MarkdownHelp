@@ -1,7 +1,7 @@
 # Test.ps1
 Formats (aligns) a Csv table
 
-## [Syntax](#syntax)
+## Syntax
 ```JavaScript
 Test.ps1
     [-InputObject] <Object>
@@ -20,10 +20,10 @@ Test.ps1
     [<CommonParameters>]
 ```
 
-## [Description](#description)
+## Description
 Csv format is still a valid as input for the [`ConvertFrom-Csv`](https://go.microsoft.com/fwlink/?LinkID=2096830) cmdlet.
 
-## [Examples](#examples)
+## Examples
 ### Example 1: Named Example
 
 Five,       5, More,     Normal
@@ -31,7 +31,7 @@ Five,       5, More,     Normal
 ### Example 2:
 Another example
 
-## [Parameter](#parameter)
+## Parameter
 ### `-InputObject <Object>`
 You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?LinkID=2096832).
 
@@ -199,13 +199,13 @@ Footnote
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-## [Inputs](#Inputs)
+## Inputs
 Csv (here) string or object list
 
-## [Outputs](#Outputs)
+## Outputs
 String[]
 
-## [Related Links](#RelatedLinks)
+## Related Links
 * https://github.com/iRon7/Format-Csv
 * [Test](https://en.wikipedia.org/wiki/Integer)
 * 1: https://www.linguee.nl/engels-nederlands/vertaling/automatic+alignment.html

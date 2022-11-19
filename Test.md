@@ -25,9 +25,24 @@ Csv format is still a valid as input for the [`ConvertFrom-Csv`](https://go.micr
 
 ## Examples
 ### Example 1: Named Example
+$Csv = @'
+"Name","Number","Object","Remark"
+"One","1","Text","Normal"
+"Two","2","123","Number"
+"Three","3","Te,xt","Comma in Text"
+"Four","4","Te""xt","Double quote in text"
+,,,"Empty ($Null)"
+"Five","5","More","Normal"
+'@
 
+$Csv |Format-Csv
+Name,  Number, Object,   Remark
+One,        1, Text,     Normal
+Two,        2, 123,      Number
+Three,      3, "Te,xt",  "Comma in Text"
+Four,       4, "Te""xt", "Double quote in text"
+,            , ,         "Empty ($Null)"
 Five,       5, More,     Normal
-
 ### Example 2:
 Another example
 
@@ -156,6 +171,9 @@ each individual cell that contains a number type (e.g. [integer][2]) will also a
 
 <a id="-code">**`-Code <String>`**</a><br/>
 
+Test () {
+    Write-Host 'test'
+}
 
 Footnote
 
@@ -173,7 +191,7 @@ This shows some Fenced code:
 
 ```Console
 Test () {
-Write-Host 'test'
+    Write-Host 'test'
 }
 ```
 Footnote
@@ -188,7 +206,10 @@ Footnote
 </table>
 
 <a id="-pscode">**`-PSCode <String>`**</a><br/>
+Test2 () {
+    Write-Host 'test'
 }
+This shows some PS > prefixed code:
 
 
 <table>
@@ -204,7 +225,6 @@ Csv (here) string or object list
 
 ## Outputs
 String[]
-
 ## Related Links
 * https://github.com/iRon7/Format-Csv
 * [Test](https://en.wikipedia.org/wiki/Integer)

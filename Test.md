@@ -32,7 +32,7 @@ Five,       5, More,     Normal
 Another example
 
 ## Parameter
-<a id="-inputobject">**`-InputObject <Object>`**</a></br/>
+<a id="-inputobject">**`-InputObject <Object>`**</a><br/>
 You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?LinkID=2096832).
 
 
@@ -44,7 +44,7 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<a id="-delimiter">**`-Delimiter <Char>`**</a></br/>
+<a id="-delimiter">**`-Delimiter <Char>`**</a><br/>
 
 3
 
@@ -57,7 +57,7 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<a id="-validatecount">**`-ValidateCount <Int32>`**</a></br/>
+<a id="-validatecount">**`-ValidateCount <Int32>`**</a><br/>
 
 
 <table>
@@ -69,7 +69,7 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<a id="-validatelength">**`-ValidateLength <Int32>`**</a></br/>
+<a id="-validatelength">**`-ValidateLength <Int32>`**</a><br/>
 
 
 <table>
@@ -81,7 +81,7 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<a id="-validatepattern">**`-ValidatePattern <String>`**</a></br/>
+<a id="-validatepattern">**`-ValidatePattern <String>`**</a><br/>
 
 
 <table>
@@ -93,7 +93,7 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<a id="-validaterange">**`-ValidateRange <Int32>`**</a></br/>
+<a id="-validaterange">**`-ValidateRange <Int32>`**</a><br/>
 
 
 <table>
@@ -105,7 +105,7 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<a id="-validatescript">**`-ValidateScript <String>`**</a></br/>
+<a id="-validatescript">**`-ValidateScript <String>`**</a><br/>
 
 
 <table>
@@ -117,7 +117,7 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<a id="-validateset">**`-ValidateSet <String>`**</a></br/>
+<a id="-validateset">**`-ValidateSet <String>`**</a><br/>
 
 each individual cell that contains a number type (e.g. [integer][2]) will also aligned to the right.
 
@@ -131,7 +131,7 @@ each individual cell that contains a number type (e.g. [integer][2]) will also a
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<a id="-supportswildcards">**`-SupportsWildcards <String>`**</a></br/>
+<a id="-supportswildcards">**`-SupportsWildcards <String>`**</a><br/>
 
 
 <table>
@@ -142,7 +142,7 @@ each individual cell that contains a number type (e.g. [integer][2]) will also a
 <tr><td>Accept wildcard characters:</td><td>True</td></tr>
 </table>
 
-<a id="-quote">**`-Quote`**</a></br/>
+<a id="-quote">**`-Quote`**</a><br/>
 (By default, each value is directly followed by a delimiter for compatibility reasons.)
 
 
@@ -154,7 +154,7 @@ each individual cell that contains a number type (e.g. [integer][2]) will also a
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<a id="-code">**`-Code <String>`**</a></br/>
+<a id="-code">**`-Code <String>`**</a><br/>
 
 
 Footnote
@@ -168,7 +168,7 @@ Footnote
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<a id="-fenced">**`-Fenced <String>`**</a></br/>
+<a id="-fenced">**`-Fenced <String>`**</a><br/>
 This shows some Fenced code:
 
 ```Console
@@ -187,7 +187,7 @@ Footnote
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<a id="-pscode">**`-PSCode <String>`**</a></br/>
+<a id="-pscode">**`-PSCode <String>`**</a><br/>
 }
 
 

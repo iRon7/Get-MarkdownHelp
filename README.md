@@ -27,17 +27,17 @@ This line will be removed from the section and added to the header of the exampl
 > * The URL for the link, which you can optionally enclose in angle brackets.
 > * The optional title for the link, which you can enclose in double quotes, single quotes, or parentheses.
 
-For the comment-base help implementation, the second part should be placed in the `.LINK` section to automaticaaly
+For the comment-base help implementation, the second part should be placed in the `.LINK` section to automatically
 listed in the end of the document. The reference will be hidden if the label is an explicit empty string(`""`).
 
 * **Quick Links**  
-Any phrase existing of a combination a alphanumeric characters spaces, underscores and dashes between squared brackets
+Any phrase existing of a combination alphanumeric characters, spaces, underscores and dashes between squared brackets
 (e.g. `[my link]`) will be linked to the (automatic) anchor id in the document, e.g.: `[my link](#my-link)`.
 
 > **Note:** There is no confirmation if the internal anchor really exists.
 
 * **Parameter Links**  
-Parameter links are simular to [Quick Links](#Quick-Links) but start with a dash and contain an existing parameter name possibly
+Parameter links are similar to [Quick Links](#Quick-Links) but start with a dash and contain an existing parameter name possibly
 followed by the word "parameter". E.g.: `[-AlternateEOL]` or `[-AlternateEOL paramater]`.
 In this example, the parameter link will refer to the internal [-AlternateEOL paramater](#-AlternateEOL-paramater).
 

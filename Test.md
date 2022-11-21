@@ -9,24 +9,24 @@ See also: [`-Quote`](#-Quote).
 ## Examples
 ### Example 1: Named Example
 ```PowerShell
-        $Csv = @'
-        "Name","Number","Object","Remark"
-        "One","1","Text","Normal"
-        "Two","2","123","Number"
-        "Three","3","Te,xt","Comma in Text"
-        "Four","4","Te""xt","Double quote in text"
-        ,,,"Empty ($Null)"
-        "Five","5","More","Normal"
-        '@
+$Csv = @'
+"Name","Number","Object","Remark"
+"One","1","Text","Normal"
+"Two","2","123","Number"
+"Three","3","Te,xt","Comma in Text"
+"Four","4","Te""xt","Double quote in text"
+,,,"Empty ($Null)"
+"Five","5","More","Normal"
+'@
 
-        $Csv |Format-Csv
-        Name,  Number, Object,   Remark
-        One,        1, Text,     Normal
-        Two,        2, 123,      Number
-        Three,      3, "Te,xt",  "Comma in Text"
-        Four,       4, "Te""xt", "Double quote in text"
-        ,            , ,         "Empty ($Null)"
-        Five,       5, More,     Normal
+$Csv |Format-Csv
+Name,  Number, Object,   Remark
+One,        1, Text,     Normal
+Two,        2, 123,      Number
+Three,      3, "Te,xt",  "Comma in Text"
+Four,       4, "Te""xt", "Double quote in text"
+,            , ,         "Empty ($Null)"
+Five,       5, More,     Normal
 ```
 ### Example 2:
 Another example
@@ -169,9 +169,9 @@ Quotes all the headers and values. If the Quote switch is set, all the delimeter
 This shows some code:
 
 ```PowerShell
-        Test () {
-            Write-Host 'test'
-        }
+Test () {
+    Write-Host 'test'
+}
 ```
 Footnote
 
@@ -207,9 +207,9 @@ Footnote
 This shows some PS > prefixed code:
 
 ```PowerShell
-         Test2 () {
-             Write-Host 'test'
-         }
+ Test2 () {
+     Write-Host 'test'
+ }
 ```
 
 <table>
@@ -225,7 +225,7 @@ Csv (here) string or object list
 
 ## Outputs
 ```PowerShell
-        String[]
+String[]
 ```
 ## Related Links
 * https://github.com/iRon7/Format-Csv

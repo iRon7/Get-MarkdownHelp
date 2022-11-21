@@ -17,7 +17,7 @@ help as apposed to the native [platyPS][3] [`New-MarkdownHelp`](https://github.c
 To create code blocks, indent every line of the block by at least four spaces or one tab relative the **text indent**.
 The **text indent* is defined by the smallest indent of the current - and the `.SYNOPSIS` section.
 Code blocks are automatically [fenced][4] for default PowerShell color coding.  The usual comment-based help prefix for code (`PS. \>`) might also be used to define a code lines.
-For more details, see the [-PSCodePattern parameter](#-PSCodePattern-parameter).
+For more details, see the [`-PSCodePattern` parameter](#-PSCodePattern).
 #### Titled Examples
 Examples can be titled by adding an (extra) hash (`#`) in front of the first line in the section.
 This line will be removed from the section and added to the header of the example.

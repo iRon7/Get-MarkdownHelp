@@ -205,12 +205,13 @@ Footnote
 
 #### <a id="-pscode">**`-PSCode <String>`**</a>
 This shows some PS > prefixed code:
+Test2 () {
 
 ```PowerShell
-    Test2 () {
-        Write-Host 'test'
-    }
+    Write-Host 'test'
 ```
+}
+
 
 <table>
 <tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>

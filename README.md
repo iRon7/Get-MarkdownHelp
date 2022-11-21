@@ -37,12 +37,12 @@ Any phrase existing of a combination alphanumeric characters, spaces, underscore
 > **Note:** There is no confirmation if the internal anchor really exists.
 
 * **Parameter Links**  
-Parameter links are similar to [Quick Links](#Quick-Links) but start with a dash and contain an existing parameter name possibly
+**Parameter links** are similar to **Quick Links** but start with a dash and contain an existing parameter name possibly
 followed by the word "parameter". E.g.: `[-AlternateEOL]` or `[-AlternateEOL parameter]`.
 In this example, the parameter link will refer to the internal [`-AlternateEOL` parameter](#-AlternateEOL).
 
 * **Cmdlet Links**  
-Cmdlet links are simular to [Quick Links](#Quick-Links) but contain a cmdlet name where the online help is known. E.g.: `[Get-Content]`.
+**Cmdlet links** are simular to **Quick Links** but contain a cmdlet name where the online help is known. E.g.: `[Get-Content]`.
 In this example, the cmdlet link will refer to the online help of the related [`Get-Content`](https://go.microsoft.com/fwlink/?LinkID=2096490) cmdlet.
 
 ## Examples

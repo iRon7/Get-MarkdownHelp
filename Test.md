@@ -2,14 +2,6 @@
 Creates a markdown Readme string from the comment based help of a command
 
 ## Description
-
-
-
-
-
-
-
-
 The [Get-MarkdownHelp][1] cmdlet retrieves the [comment-based help][2] and converts it to a Markdown page
 simular to the general online PowerShell help pages (as e.g. [`Get-Content`](https://go.microsoft.com/fwlink/?LinkID=2096490)).  Note that this cmdlet *doesn't* support `XML`-based help files, but has a few extra features for the comment-based
 help as apposed to the native [platyPS][3] [`New-MarkdownHelp`](https://github.com/PowerShell/platyPS/blob/master/docs/New-MarkdownHelp.md):

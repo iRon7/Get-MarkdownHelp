@@ -21,13 +21,13 @@
 
 .DESCRIPTION
     The [Get-MarkdownHelp][1] cmdlet retrieves the [comment-based help][2] and converts it to a Markdown page
-    simular to the general online PowerShell help pages (as e.g. [Get-Content]).\
+    similar to the general online PowerShell help pages (as e.g. [Get-Content]).\
     Note that this cmdlet *doesn't* support `XML`-based help files, but has a few extra features for the comment-based
-    help as apposed to the native [platyPS][3] [New-MarkdownHelp]:
+    help as opposed to the native [platyPS][3] [New-MarkdownHelp]:
 
     * **Code Blocks**\
     To create code blocks, indent every line of the block by at least four spaces or one tab relative the **text indent**.
-    The **text indent* is defined by the smallest indent of the current - and the `.SYNOPSIS` section.
+    The **text indent** is defined by the smallest indent of the current - and the `.SYNOPSIS` section.\
     Code blocks are automatically [fenced][4] for default PowerShell color coding.\
     The usual comment-based help prefix for code (`PS. \>`) might also be used to define a code lines.
     For more details, see the [-PSCodePattern parameter].
@@ -37,7 +37,7 @@
     This line will be removed from the section and added to the header of the example.
 
     * **Links**\
-    > As Per markdown defintiton, The first part of a [reference-style link][5] is formatted with two sets of brackets.
+    > As Per markdown definititon, The first part of a [reference-style link][5] is formatted with two sets of brackets.
     > The first set of brackets surrounds the text that should appear linked. The second set of brackets displays
     > a label used to point to the link you’re storing elsewhere in your document, e.g.: `[rabbit-hole][1]`.
     > The second part of a reference-style link is formatted with the following attributes:
@@ -45,22 +45,22 @@
     > * The URL for the link, which you can optionally enclose in angle brackets.
     > * The optional title for the link, which you can enclose in double quotes, single quotes, or parentheses.
 
-    For the comment-base help implementation, the second part should be placed in the `.LINK` section to automaticaaly
+    For the comment-base help implementation, the second part should be placed in the `.LINK` section to automatically
     listed in the end of the document. The reference will be hidden if the label is an explicit empty string(`""`).
 
     * **Quick Links**\
-    Any phrase existing of a combination a alphanumeric characters spaces, underscores and dashes between squared brackets
+    Any phrase existing of a combination alphanumeric characters, spaces, underscores and dashes between squared brackets
     (e.g. `[my link]`) will be linked to the (automatic) anchor id in the document, e.g.: `[my link](#my-link)`.
 
     > **Note:** There is no confirmation if the internal anchor really exists.
 
     * **Parameter Links**\
-    Parameter links are simular to [Quick Links] but start with a dash and contain an existing parameter name possibly
-    followed by the word "parameter". E.g.: `[-AlternateEOL]` or `[-AlternateEOL paramater]`.
-    In this example, the parameter link will refer to the internal [-AlternateEOL paramater].
+    **Parameter links** are similar to **Quick Links** but start with a dash and contain an existing parameter name possibly
+    followed by the word "parameter". E.g.: `[-AlternateEOL]` or `[-AlternateEOL parameter]`.
+    In this example, the parameter link will refer to the internal [-AlternateEOL parameter].
 
     * **Cmdlet Links**\
-    Cmdlet links are simular to [Quick Links] but contain a cmdlet name where the online help is known. E.g.: `[Get-Content]`.
+    **Cmdlet links** are simular to **Quick Links** but contain a cmdlet name where the online help is known. E.g.: `[Get-Content]`.
     In this example, the cmdlet link will refer to the online help of the related [Get-Content] cmdlet.
 
 .INPUTS
@@ -290,11 +290,8 @@ begin {
                 $SkipLines = 0
             }
             else { # start or continue text block
-                if ($Block -is [int]) {
-                     '```'
-                    if ($SkipLines -gt 1) { $Null = $Block.AppendLine() }
-                }
-                elseif ($Skiplines -gt 1) { $Null = $Block.AppendLine() }
+                if ($Block -is [int]) { '```' }
+                elseif ($Skiplines -ge 1) { $Null = $Block.AppendLine() }
                 if ($Block -isnot [System.Text.StringBuilder]) { $Block = [System.Text.StringBuilder]::new() }
                 $Text = $Sentence.Text -Replace $AlternateEOL, '  '
                 $Null = $Block.AppendLine($Text)
@@ -320,7 +317,7 @@ begin {
 process {
     $Script:Indent = $Null
     $Command = Get-Command $CommandName
-    $Name = $Command.Name
+    $Name = [System.IO.Path]::GetFileNameWithoutExtension($Command.Name)
     $Help = $Null
 
     $Help = GetHelp $Command.ScriptBlock
@@ -402,7 +399,7 @@ process {
                             elseif ($Attributes.Position -ne $Attributes.Position[0]) { $Attributes.Position -Join ', ' }
                             else { $Attributes.Position[0] }
                 $Dictionary['Position']                   = $Position
-                $DefaultValue                             = $Param.DefaultValue # https://stackoverflow.com/a/64358608/1701026
+                $DefaultValue                             = if ($Param.DefaultValue) { "<code>$($Param.DefaultValue)</code>" } # https://stackoverflow.com/a/64358608/1701026
                 $Dictionary['Default value']              = $DefaultValue
                 $Dictionary['Accept pipeline input']      = $Attributes.ValueFromPipelineByPropertyName
                 $Globbing = ($Param.Attributes.where{$_.TypeName.Name -eq 'SupportsWildcards'}).Count -gt 0

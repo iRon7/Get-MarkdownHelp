@@ -26,6 +26,7 @@ listed in the end of the document. The reference will be hidden if the label is 
 * Quick Links
 Any phrase existing of a combination a alphanumeric characters spaces, underscores and dashes between squared brackets
 (e.g. `[my link]`) will be linked to the (automatic) anchor id in the document, e.g.: `[my link](#my-link)`.
+
 *Note:* There is no confirmation if the internal anchor really exists.
 * Parameter Links
 Parameter links are simular to [Quick Links](#Quick-Links) but start with a dash and contain an existing parameter name possibly

@@ -1,236 +1,127 @@
-# Test.ps1
-Formats (aligns) a Csv table
+# Get-MarkdownHelp.ps1
+Creates a markdown Readme string from the comment based help of a command
 
 ## Description
-This cmdlet makes a Csv file or list better human readable by aligning the columns in a way that the resulted
-Csv format is still a valid as input for the [`ConvertFrom-Csv`](https://go.microsoft.com/fwlink/?LinkID=2096830) cmdlet.
-See also: [`-Quote`](#-Quote).
+
+
+
+
+
+
+
+
+The [Get-MarkdownHelp][1] cmdlet retrieves the [comment-based help][2] and converts it to a Markdown page
+simular to the general online PowerShell help pages (as e.g. [`Get-Content`](https://go.microsoft.com/fwlink/?LinkID=2096490)).  Note that this cmdlet *doesn't* support `XML`-based help files, but has a few extra features for the comment-based
+help as apposed to the native [platyPS][3] [`New-MarkdownHelp`](https://github.com/PowerShell/platyPS/blob/master/docs/New-MarkdownHelp.md):
+#### Code Blocks
+To create code blocks, indent every line of the block by at least four spaces or one tab relative the **text indent**.
+The **text indent* is defined by the smallest indent of the current - and the `.SYNOPSIS` section.
+Code blocks are automatically [fenced][4] for default PowerShell color coding.  The usual comment-based help prefix for code (`PS. \>`) might also be used to define a code lines.
+For more details, see the [-PSCodePattern parameter](#-PSCodePattern-parameter).
+#### Titled Examples
+Examples can be titled by adding an (extra) hash (`#`) in front of the first line in the section.
+This line will be removed from the section and added to the header of the example.
+#### Links
+> As Per markdown defintiton, The first part of a [reference-style link][5] is formatted with two sets of brackets.
+> The first set of brackets surrounds the text that should appear linked. The second set of brackets displays
+> a label used to point to the link youΓÇÖre storing elsewhere in your document, e.g.: `[rabbit-hole][1]`.
+> The second part of a reference-style link is formatted with the following attributes:
+> * The label, in brackets, followed immediately by a colon and at least one space (e.g., `[label]:` ).
+> * The URL for the link, which you can optionally enclose in angle brackets.
+> * The optional title for the link, which you can enclose in double quotes, single quotes, or parentheses.
+For the comment-base help implementation, the second part should be placed in the `.LINK` section to automaticaaly
+listed in the end of the document. The reference will be hidden if the label is an explicit empty string(`""`).
+#### Quick Links
+Any phrase existing of a combination a alphanumeric characters spaces, underscores and dashes between squared brackets
+(e.g. `[my link]`) will be linked to the (automatic) anchor id in the document, e.g.: `[my link](#my-link)`.
+*Note:* There is no confirmation if the internal anchor really exists.
+#### Parameter Links
+Parameter links are simular to [Quick Links](#Quick-Links) but start with a dash and contain an existing parameter name possibly
+followed by the word "parameter". E.g.: `[-AlternateEOL]` or `[-AlternateEOL paramater]`.
+In this example, the parameter link will refer to the internal [-AlternateEOL paramater](#-AlternateEOL-paramater).
+#### Cmdlet Links
+Cmdlet links are simular to [Quick Links](#Quick-Links) but contain a cmdlet name where the online help is known. E.g.: `[Get-Content]`.
+In this example, the cmdlet link will refer to the online help of the related [`Get-Content`](https://go.microsoft.com/fwlink/?LinkID=2096490) cmdlet.
 
 ## Examples
-### Example 1: Named Example
+### Example 1: Display markdown help
+This example generates a markdown format help page from itself and shows it in the default browser
+
 ```PowerShell
-$Csv = @'
-"Name","Number","Object","Remark"
-"One","1","Text","Normal"
-"Two","2","123","Number"
-"Three","3","Te,xt","Comma in Text"
-"Four","4","Te""xt","Double quote in text"
-,,,"Empty ($Null)"
-"Five","5","More","Normal"
-'@
-
-$Csv |Format-Csv
-Name,  Number, Object,   Remark
-One,        1, Text,     Normal
-Two,        2, 123,      Number
-Three,      3, "Te,xt",  "Comma in Text"
-Four,       4, "Te""xt", "Double quote in text"
-,            , ,         "Empty ($Null)"
-Five,       5, More,     Normal
+.\Get-MarkdownHelp.ps1 .\Show-MarkDown.ps1 |Out-String |Show-Markdown -UseBrowser
 ```
-### Example 2:
-Another example
+### Example 2: Copy markdown help to a website
+This command creates a markdown readme string for the `Join-Object` cmdlet and puts it on the clipboard
+so that it might be pasted into e.g. a GitHub readme file.
 
+```PowerShell
+Get-MarkdownHelp Join-Object |Clip
+```
+### Example 3: Save markdown help to file
+This command creates a markdown readme string for the `.\MyScript.ps1` script and saves it in `Readme.md`.
+
+```PowerShell
+Get-MarkdownHelp .\MyScript.ps1 |Set-Content .\Readme.md
+```
 ## Parameter
-#### <a id="-inputobject">**`-InputObject <Object>`**</a>
-Specifies the CSV strings to be formatted or the objects that are converted to CSV formatted strings.
-You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?LinkID=2096832).
+#### <a id="-commandname">**`-CommandName <String>`**</a>
+Specifies the name of the cmdlet that contains the [comment based help][2].
 
 
 <table>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">Object</a></td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
+<tr><td>Aliases:</td><td>Name</td></tr>
 <tr><td>Position:</td><td>0</td></tr>
 <tr><td>Default value:</td><td></td></tr>
-<tr><td>Accept pipeline input:</td><td>False</td></tr>
+<tr><td>Accept pipeline input:</td><td>True</td></tr>
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-#### <a id="-delimiter">**`-Delimiter <Char>`**</a>
-
-Specifies the delimiter to separate the property values in CSV strings. The default is a comma (,).
-Enter a character, such as a colon (:). To specify a semicolon (;) enclose it in single quotation marks.
-List
-1
-2
-3
+#### <a id="-pscodepattern">**`-PSCodePattern <String>`**</a>
+Specifies the PowerShell code pattern used by the get-help cmdlet.
+The native [`Get-Help`] cmdlet automatically adds a PowerShell prompt (`PS \>`) to the first line of an example if not yet exist.
+To be consistent with the first line you might manually add a PowerShell prompt to each line of code which will be converted to
+a code block by this `Get-MarkdownHelp` cmdlet.
 
 
 <table>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Char">Char</a></td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
 <tr><td>Position:</td><td>1</td></tr>
-<tr><td>Default value:</td><td>','</td></tr>
+<tr><td>Default value:</td><td>'PS.*\>'</td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-#### <a id="-validatecount">**`-ValidateCount <Int32>`**</a>
+#### <a id="-alternateeol">**`-AlternateEOL <String>`**</a>
+The recommended way to force a line break or new line (`<br>`) in markdown is to end a line with two or more spaces but as that
+might cause a _[Avoid Trailing Whitespace][7]_ warning, you might also consider to use an alternate EOL marker.  Any alternate EOL marker (at the end of the line) will be replaced by two spaces by this `Get-MarkdownHelp` cmdlet.
 
 
 <table>
-<tr><td>Accepted length:</td><td>-1</td></tr>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Int32">Int32</a></td></tr>
+<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
 <tr><td>Position:</td><td>2</td></tr>
-<tr><td>Default value:</td><td></td></tr>
-<tr><td>Accept pipeline input:</td><td>False</td></tr>
-<tr><td>Accept wildcard characters:</td><td>False</td></tr>
-</table>
-
-#### <a id="-validatelength">**`-ValidateLength <Int32>`**</a>
-
-
-<table>
-<tr><td>Accepted length:</td><td>-1</td></tr>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Int32">Int32</a></td></tr>
-<tr><td>Position:</td><td>3</td></tr>
-<tr><td>Default value:</td><td></td></tr>
-<tr><td>Accept pipeline input:</td><td>False</td></tr>
-<tr><td>Accept wildcard characters:</td><td>False</td></tr>
-</table>
-
-#### <a id="-validatepattern">**`-ValidatePattern <String>`**</a>
-
-
-<table>
-<tr><td>Accepted pattern:</td><td><code>^[a-z]+$</code></td></tr>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
-<tr><td>Position:</td><td>4</td></tr>
-<tr><td>Default value:</td><td></td></tr>
-<tr><td>Accept pipeline input:</td><td>False</td></tr>
-<tr><td>Accept wildcard characters:</td><td>False</td></tr>
-</table>
-
-#### <a id="-validaterange">**`-ValidateRange <Int32>`**</a>
-
-
-<table>
-<tr><td>Accepted range:</td><td>-8</td></tr>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Int32">Int32</a></td></tr>
-<tr><td>Position:</td><td>5</td></tr>
-<tr><td>Default value:</td><td></td></tr>
-<tr><td>Accept pipeline input:</td><td>False</td></tr>
-<tr><td>Accept wildcard characters:</td><td>False</td></tr>
-</table>
-
-#### <a id="-validatescript">**`-ValidateScript <String>`**</a>
-
-
-<table>
-<tr><td>Accepted script condition:</td><td><code>$_ -eq 20</code></td></tr>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
-<tr><td>Position:</td><td>6</td></tr>
-<tr><td>Default value:</td><td></td></tr>
-<tr><td>Accept pipeline input:</td><td>False</td></tr>
-<tr><td>Accept wildcard characters:</td><td>False</td></tr>
-</table>
-
-#### <a id="-validateset">**`-ValidateSet <String>`**</a>
-
-Specifies the alignment of the columns
-* Left  - to align all the columns to the left
-* Right - to align all the columns to the Right
-* Auto  - to autmatically align each cell depending on the column and cell contents
-When [automatic alignment][1] is set, the whole column is aligned to the right if all cells are numeric. Besides,
-each individual cell that contains a number type (e.g. [integer][2]) will also aligned to the right.
-
-
-<table>
-<tr><td>Accepted values:</td><td>Auto, Left, Right</td></tr>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
-<tr><td>Position:</td><td>7</td></tr>
-<tr><td>Default value:</td><td>'Auto'</td></tr>
-<tr><td>Accept pipeline input:</td><td>False</td></tr>
-<tr><td>Accept wildcard characters:</td><td>False</td></tr>
-</table>
-
-#### <a id="-supportswildcards">**`-SupportsWildcards <String>`**</a>
-
-
-<table>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
-<tr><td>Position:</td><td>8</td></tr>
-<tr><td>Default value:</td><td></td></tr>
-<tr><td>Accept pipeline input:</td><td>False</td></tr>
-<tr><td>Accept wildcard characters:</td><td>True</td></tr>
-</table>
-
-#### <a id="-quote">**`-Quote`**</a>
-Quotes all the headers and values. If the Quote switch is set, all the delimeters are aligned.  (By default, each value is directly followed by a delimiter for compatibility reasons.)
-
-
-<table>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.Management.Automation.SwitchParameter">SwitchParameter</a></td></tr>
-<tr><td>Position:</td><td>Named</td></tr>
-<tr><td>Default value:</td><td></td></tr>
-<tr><td>Accept pipeline input:</td><td>False</td></tr>
-<tr><td>Accept wildcard characters:</td><td>False</td></tr>
-</table>
-
-#### <a id="-code">**`-Code <String>`**</a>
-This shows some code:
-
-```PowerShell
-Test () {
-    Write-Host 'test'
-}
-```
-Footnote
-
-
-<table>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
-<tr><td>Position:</td><td>9</td></tr>
-<tr><td>Default value:</td><td></td></tr>
-<tr><td>Accept pipeline input:</td><td>False</td></tr>
-<tr><td>Accept wildcard characters:</td><td>False</td></tr>
-</table>
-
-#### <a id="-fenced">**`-Fenced <String>`**</a>
-This shows some **fenced** code:
-
-```Console
-Test () {
-    Write-Host 'test'
-}
-```
-Footnote
-
-
-<table>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
-<tr><td>Position:</td><td>10</td></tr>
-<tr><td>Default value:</td><td></td></tr>
-<tr><td>Accept pipeline input:</td><td>False</td></tr>
-<tr><td>Accept wildcard characters:</td><td>False</td></tr>
-</table>
-
-#### <a id="-pscode">**`-PSCode <String>`**</a>
-This shows some PS > prefixed code:
-
-```PowerShell
- Test2 () {
-     Write-Host 'test'
- }
-```
-
-<table>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
-<tr><td>Position:</td><td>11</td></tr>
-<tr><td>Default value:</td><td></td></tr>
+<tr><td>Default value:</td><td>'\'</td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
 ## Inputs
-Csv (here) string or object list
+String (command name)
 
 ## Outputs
-```PowerShell
 String[]
-```
-## Related Links
-* https://github.com/iRon7/Format-Csv
-* [Test](https://en.wikipedia.org/wiki/Integer)
-* 1: https://www.linguee.nl/engels-nederlands/vertaling/automatic+alignment.html
-* [2]: https://en.wikipedia.org/wiki/Integer (Integer)
 
-[1]: https://www.linguee.nl/engels-nederlands/vertaling/automatic+alignment.html
+## Related Links
+* 1: [Online Help][1]
+* 2: [About comment based help][2]
+* 3: [PlatyPS MALM renderer][3]
+* 4: [Fenced Code Blocks][4]
+* 5: [Reference-style Links][5]
+* [7]: https://learn.microsoft.com/powershell/utility-modules/psscriptanalyzer/rules/avoidtrailingwhitespace ""
+* [Markdown guide](https://www.markdownguide.org/basic-syntax/)
+
+[1]: https://github.com/iRon7/Get-MarkdownHelp "Online Help"
+[2]: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_comment_based_help "About comment based help"
+[3]: https://github.com/PowerShell/platyPS "PlatyPS MALM renderer"
+[4]: https://www.markdownguide.org/extended-syntax/#fenced-code-blocks "Fenced Code Blocks"
+[5]: https://www.markdownguide.org/basic-syntax/#reference-style-links "Reference-style Links"

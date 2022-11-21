@@ -74,7 +74,7 @@ Specifies the name of the cmdlet that contains the [comment based help][2].
 <tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
 <tr><td>Aliases:</td><td>Name</td></tr>
 <tr><td>Position:</td><td>0</td></tr>
-<tr><td>Default value:</td><td></td></tr>
+<tr><td>Default value:</td><td><code></code></td></tr>
 <tr><td>Accept pipeline input:</td><td>True</td></tr>
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
@@ -89,7 +89,7 @@ a code block by this `Get-MarkdownHelp` cmdlet.
 <table>
 <tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
 <tr><td>Position:</td><td>1</td></tr>
-<tr><td>Default value:</td><td>'PS.*\>'</td></tr>
+<tr><td>Default value:</td><td><code>'PS.*\>'</code></td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
@@ -103,7 +103,7 @@ Any alternate EOL marker (at the end of the line) will be replaced by two spaces
 <table>
 <tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
 <tr><td>Position:</td><td>2</td></tr>
-<tr><td>Default value:</td><td>'\'</td></tr>
+<tr><td>Default value:</td><td><code>'\'</code></td></tr>
 <tr><td>Accept pipeline input:</td><td>False</td></tr>
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>

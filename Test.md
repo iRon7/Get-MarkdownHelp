@@ -49,7 +49,7 @@ Five,       5, More,     Normal
 Another example
 
 ## Parameter
-<h4 id="-inputobject">**`-InputObject <Object>`**</h4><br/>
+#### <a id="-inputobject">**`-InputObject <Object>`**</a><br/>
 Specifies the CSV strings to be formatted or the objects that are converted to CSV formatted strings.
 You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?LinkID=2096832).
 
@@ -62,7 +62,7 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<h4 id="-delimiter">**`-Delimiter <Char>`**</h4><br/>
+#### <a id="-delimiter">**`-Delimiter <Char>`**</a><br/>
 
 Specifies the delimiter to separate the property values in CSV strings. The default is a comma (,).
 Enter a character, such as a colon (:). To specify a semicolon (;) enclose it in single quotation marks.
@@ -80,7 +80,7 @@ List
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<h4 id="-validatecount">**`-ValidateCount <Int32>`**</h4><br/>
+#### <a id="-validatecount">**`-ValidateCount <Int32>`**</a><br/>
 
 
 <table>
@@ -92,7 +92,7 @@ List
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<h4 id="-validatelength">**`-ValidateLength <Int32>`**</h4><br/>
+#### <a id="-validatelength">**`-ValidateLength <Int32>`**</a><br/>
 
 
 <table>
@@ -104,7 +104,7 @@ List
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<h4 id="-validatepattern">**`-ValidatePattern <String>`**</h4><br/>
+#### <a id="-validatepattern">**`-ValidatePattern <String>`**</a><br/>
 
 
 <table>
@@ -116,7 +116,7 @@ List
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<h4 id="-validaterange">**`-ValidateRange <Int32>`**</h4><br/>
+#### <a id="-validaterange">**`-ValidateRange <Int32>`**</a><br/>
 
 
 <table>
@@ -128,7 +128,7 @@ List
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<h4 id="-validatescript">**`-ValidateScript <String>`**</h4><br/>
+#### <a id="-validatescript">**`-ValidateScript <String>`**</a><br/>
 
 
 <table>
@@ -140,7 +140,7 @@ List
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<h4 id="-validateset">**`-ValidateSet <String>`**</h4><br/>
+#### <a id="-validateset">**`-ValidateSet <String>`**</a><br/>
 
 Specifies the alignment of the columns
 * Left  - to align all the columns to the left
@@ -159,7 +159,7 @@ each individual cell that contains a number type (e.g. [integer][2]) will also a
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<h4 id="-supportswildcards">**`-SupportsWildcards <String>`**</h4><br/>
+#### <a id="-supportswildcards">**`-SupportsWildcards <String>`**</a><br/>
 
 
 <table>
@@ -170,7 +170,7 @@ each individual cell that contains a number type (e.g. [integer][2]) will also a
 <tr><td>Accept wildcard characters:</td><td>True</td></tr>
 </table>
 
-<h4 id="-quote">**`-Quote`**</h4><br/>
+#### <a id="-quote">**`-Quote`**</a><br/>
 Quotes all the headers and values. If the Quote switch is set, all the delimeters are aligned.  (By default, each value is directly followed by a delimiter for compatibility reasons.)
 
 
@@ -182,7 +182,7 @@ Quotes all the headers and values. If the Quote switch is set, all the delimeter
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<h4 id="-code">**`-Code <String>`**</h4><br/>
+#### <a id="-code">**`-Code <String>`**</a><br/>
 
 Test () {
     Write-Host 'test'
@@ -200,7 +200,7 @@ Footnote
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<h4 id="-fenced">**`-Fenced <String>`**</h4><br/>
+#### <a id="-fenced">**`-Fenced <String>`**</a><br/>
 This shows some Fenced code:
 
 ```Console
@@ -219,7 +219,7 @@ Footnote
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-<h4 id="-pscode">**`-PSCode <String>`**</h4><br/>
+#### <a id="-pscode">**`-PSCode <String>`**</a><br/>
 Test2 () {
     Write-Host 'test'
 }

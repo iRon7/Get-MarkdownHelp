@@ -23,7 +23,7 @@ Test.ps1
 ## Description
 This cmdlet makes a Csv file or list better human readable by aligning the columns in a way that the resulted
 Csv format is still a valid as input for the [`ConvertFrom-Csv`](https://go.microsoft.com/fwlink/?LinkID=2096830) cmdlet.
-See also: [-Quote](-Quote).
+See also: [`-Quote`](#-Quote).
 
 ## Examples
 ### Example 1: Named Example

@@ -112,7 +112,6 @@ String[]
 * 3: [PlatyPS MALM renderer][3]
 * 4: [Fenced Code Blocks][4]
 * 5: [Reference-style Links][5]
-* [7]: https://learn.microsoft.com/powershell/utility-modules/psscriptanalyzer/rules/avoidtrailingwhitespace ""
 * [Markdown guide](https://www.markdownguide.org/basic-syntax/)
 
 [1]: https://github.com/iRon7/Get-MarkdownHelp "Online Help"

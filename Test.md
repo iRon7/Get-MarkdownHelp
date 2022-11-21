@@ -21,7 +21,9 @@ Test.ps1
 ```
 
 ## Description
-See Also [-Quote](-Quote).
+This cmdlet makes a Csv file or list better human readable by aligning the columns in a way that the resulted
+Csv format is still a valid as input for the [`ConvertFrom-Csv`](https://go.microsoft.com/fwlink/?LinkID=2096830) cmdlet.
+See also: [-Quote](-Quote).
 
 ## Examples
 ### Example 1: Named Example
@@ -48,6 +50,7 @@ Another example
 
 ## Parameter
 <a id="-inputobject">**`-InputObject <Object>`**</a><br/>
+Specifies the CSV strings to be formatted or the objects that are converted to CSV formatted strings.
 You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?LinkID=2096832).
 
 
@@ -61,6 +64,11 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 
 <a id="-delimiter">**`-Delimiter <Char>`**</a><br/>
 
+Specifies the delimiter to separate the property values in CSV strings. The default is a comma (,).
+Enter a character, such as a colon (:). To specify a semicolon (;) enclose it in single quotation marks.
+List
+1
+2
 3
 
 
@@ -134,6 +142,11 @@ You can also pipe objects to [`ConvertTo-CSV`](https://go.microsoft.com/fwlink/?
 
 <a id="-validateset">**`-ValidateSet <String>`**</a><br/>
 
+Specifies the alignment of the columns
+* Left  - to align all the columns to the left
+* Right - to align all the columns to the Right
+* Auto  - to autmatically align each cell depending on the column and cell contents
+When [automatic alignment][1] is set, the whole column is aligned to the right if all cells are numeric. Besides,
 each individual cell that contains a number type (e.g. [integer][2]) will also aligned to the right.
 
 
@@ -158,7 +171,7 @@ each individual cell that contains a number type (e.g. [integer][2]) will also a
 </table>
 
 <a id="-quote">**`-Quote`**</a><br/>
-(By default, each value is directly followed by a delimiter for compatibility reasons.)
+Quotes all the headers and values. If the Quote switch is set, all the delimeters are aligned.  (By default, each value is directly followed by a delimiter for compatibility reasons.)
 
 
 <table>
@@ -175,6 +188,7 @@ Test () {
     Write-Host 'test'
 }
 
+This shows some Fenced code:
 Footnote
 
 

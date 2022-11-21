@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.0
+.VERSION 1.0.1
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -39,7 +39,7 @@
     * **Links**\
     > As Per markdown definititon, The first part of a [reference-style link][5] is formatted with two sets of brackets.
     > The first set of brackets surrounds the text that should appear linked. The second set of brackets displays
-    > a label used to point to the link you’re storing elsewhere in your document, e.g.: `[rabbit-hole][1]`.
+    > a label used to point to the link youâ€™re storing elsewhere in your document, e.g.: `[rabbit-hole][1]`.
     > The second part of a reference-style link is formatted with the following attributes:
     > * The label, in brackets, followed immediately by a colon and at least one space (e.g., `[label]:` ).
     > * The URL for the link, which you can optionally enclose in angle brackets.
@@ -86,7 +86,7 @@
 .EXAMPLE
     # Display markdown help
     This example generates a markdown format help page from itself and shows it in the default browser
- 
+
         .\Get-MarkdownHelp.ps1 .\Show-MarkDown.ps1 |Out-String |Show-Markdown -UseBrowser
 
 .EXAMPLE
@@ -182,7 +182,7 @@ begin {
                 }
             }
 
-            
+
         }
         $Help
     }
@@ -264,7 +264,6 @@ begin {
             }
         }
 
-        $Fence = $Null
         $SkipLines = [int]::MinValue
 
         $Block = $Null
@@ -327,7 +326,7 @@ process {
 
     if ($Help) {
         Write-Debug ($Help |ConvertTo-Json -Depth 9)
-        
+
         $Ast = [System.Management.Automation.Language.Parser]::ParseInput($Command.ScriptBlock,[ref]$Null,[ref]$Null)
         $Params = @(if ($Ast.ParamBlock) { $Ast.ParamBlock.FindAll({$Args[0] -is [System.Management.Automation.Language.ParameterAst]}, $True) })
         $ParamNames = @(if ($Params) { $Params.Name.VariablePath.UserPath })

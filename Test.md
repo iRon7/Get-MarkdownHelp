@@ -3,23 +3,6 @@ Formats (aligns) a Csv table
 
 ## Syntax
 ```JavaScript
-Test.ps1
-    [-InputObject] <Object>
-    [[-Delimiter] <char>]
-    [[-ValidateCount] <int>]
-    [[-ValidateLength] <int>]
-    [[-ValidatePattern] <string>]
-    [[-ValidateRange] <int>]
-    [[-ValidateScript] <string>]
-    [[-ValidateSet] <string>]
-    [[-SupportsWildcards] <string>]
-    [[-Code] <string>]
-    [[-Fenced] <string>]
-    [[-PSCode] <string>]
-    [-Quote]
-    [<CommonParameters>]
-```
-
 ## Description
 This cmdlet makes a Csv file or list better human readable by aligning the columns in a way that the resulted
 Csv format is still a valid as input for the [`ConvertFrom-Csv`](https://go.microsoft.com/fwlink/?LinkID=2096830) cmdlet.
@@ -27,27 +10,26 @@ See also: [`-Quote`](#-Quote).
 
 ## Examples
 ### Example 1: Named Example
+```PowerShell
+    $Csv = @'
+    "Name","Number","Object","Remark"
+    "One","1","Text","Normal"
+    "Two","2","123","Number"
+    "Three","3","Te,xt","Comma in Text"
+    "Four","4","Te""xt","Double quote in text"
+    ,,,"Empty ($Null)"
+    "Five","5","More","Normal"
+    '@
 
-$Csv = @'
-"Name","Number","Object","Remark"
-"One","1","Text","Normal"
-"Two","2","123","Number"
-"Three","3","Te,xt","Comma in Text"
-"Four","4","Te""xt","Double quote in text"
-,,,"Empty ($Null)"
-"Five","5","More","Normal"
-'@
-
-$Csv |Format-Csv
-Name,  Number, Object,   Remark
-One,        1, Text,     Normal
-Two,        2, 123,      Number
-Three,      3, "Te,xt",  "Comma in Text"
-Four,       4, "Te""xt", "Double quote in text"
-,            , ,         "Empty ($Null)"
-Five,       5, More,     Normal
-Test
-
+    $Csv |Format-Csv
+    Name,  Number, Object,   Remark
+    One,        1, Text,     Normal
+    Two,        2, 123,      Number
+    Three,      3, "Te,xt",  "Comma in Text"
+    Four,       4, "Te""xt", "Double quote in text"
+    ,            , ,         "Empty ($Null)"
+    Five,       5, More,     Normal
+```
 ### Example 2:
 Another example
 
@@ -186,12 +168,13 @@ Quotes all the headers and values. If the Quote switch is set, all the delimeter
 </table>
 
 #### <a id="-code">**`-Code <String>`**</a>
+This shows some code:
 
-Test () {
-    Write-Host 'test'
-}
-
-This shows some Fenced code:
+```PowerShell
+    Test () {
+        Write-Host 'test'
+    }
+```
 Footnote
 
 
@@ -204,7 +187,7 @@ Footnote
 </table>
 
 #### <a id="-fenced">**`-Fenced <String>`**</a>
-This shows some Fenced code:
+This shows some **fenced** code:
 
 ```Console
 Test () {
@@ -223,11 +206,13 @@ Footnote
 </table>
 
 #### <a id="-pscode">**`-PSCode <String>`**</a>
-Test2 () {
-    Write-Host 'test'
-}
 This shows some PS > prefixed code:
 
+```PowerShell
+    Test2 () {
+        Write-Host 'test'
+    }
+```
 
 <table>
 <tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
@@ -241,7 +226,9 @@ This shows some PS > prefixed code:
 Csv (here) string or object list
 
 ## Outputs
-String[]
+```PowerShell
+    String[]
+```
 ## Related Links
 * https://github.com/iRon7/Format-Csv
 * [Test](https://en.wikipedia.org/wiki/Integer)

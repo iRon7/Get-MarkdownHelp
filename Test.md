@@ -1,8 +1,6 @@
 # Test.ps1
 Formats (aligns) a Csv table
 
-## Syntax
-```JavaScript
 ## Description
 This cmdlet makes a Csv file or list better human readable by aligning the columns in a way that the resulted
 Csv format is still a valid as input for the [`ConvertFrom-Csv`](https://go.microsoft.com/fwlink/?LinkID=2096830) cmdlet.

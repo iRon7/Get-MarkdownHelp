@@ -109,10 +109,10 @@ Any alternate EOL marker (at the end of the line) will be replaced by two spaces
 </table>
 
 ## Inputs
-String (command name)
+`String` (command name)
 
 ## Outputs
-String[]
+`String[]`
 
 ## Related Links
 * 1: [Online Help][1]

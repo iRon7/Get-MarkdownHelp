@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.1
+.VERSION 1.0.2
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -39,7 +39,7 @@
     * **Links**\
     > As Per markdown definititon, The first part of a [reference-style link][5] is formatted with two sets of brackets.
     > The first set of brackets surrounds the text that should appear linked. The second set of brackets displays
-    > a label used to point to the link youâ€™re storing elsewhere in your document, e.g.: `[rabbit-hole][1]`.
+    > a label used to point to the link you're storing elsewhere in your document, e.g.: `[rabbit-hole][1]`.
     > The second part of a reference-style link is formatted with the following attributes:
     > * The label, in brackets, followed immediately by a colon and at least one space (e.g., `[label]:` ).
     > * The URL for the link, which you can optionally enclose in angle brackets.
@@ -64,10 +64,10 @@
     In this example, the cmdlet link will refer to the online help of the related [Get-Content] cmdlet.
 
 .INPUTS
-    String (command name)
+    `String` (command name)
 
 .OUTPUTS
-    String[]
+    `String[]`
 
 .PARAMETER CommandName
     Specifies the name of the cmdlet that contains the [comment based help][2].
@@ -229,23 +229,22 @@ begin {
     }
 
     function QuickLinks($Markdown) {
+        $CallBack = {
+            $Label = $Args[0].Value.TrimStart('[').TrimEnd(']')
+            if ( $Label -Match '^(-\w+)(\s+parameter)?$' -and $ParamNames -eq $Matches[1].TrimStart('-') ) {
+                "[``$($Matches[1])``$($Matches[2])](#$($Matches[1]))"
+            }
+            else {
+                $Command = Get-Command $Label -ErrorAction SilentlyContinue
+                if ($Command.HelpUri) { "[``$Label``]($($Command.HelpUri))" }
+                else { "[$Label](#$($Label -Replace '\W+', '-'))" }
+            }
+        }
         $Index = 0
         -Join @(
             foreach ($String in @(SplitInLineCode $Markdown)) {
                 if ($Index++ -band 1) { $String } # Inline code
-                else {
-                    $String -Replace '(?<!\])\[[\w\- ]+\](?![\[\(])', {
-                        $Label = $_.Value.TrimStart('[').TrimEnd(']')
-                        if ( $Label -Match '^(-\w+)(\s+parameter)?$' -and $ParamNames -eq $Matches[1].TrimStart('-') ) {
-                            "[``$($Matches[1])``$($Matches[2])](#$($Matches[1]))"
-                        }
-                        else {
-                            $Command = Get-Command $Label -ErrorAction SilentlyContinue
-                            if ($Command.HelpUri) { "[``$Label``]($($Command.HelpUri))" }
-                            else { "[$Label](#$($Label -Replace '\W+', '-'))" }
-                        }
-                    }
-                }
+                else { ([regex]'(?<!\])\[[\w\- ]+\](?![\[\(])').Replace($String, $CallBack) }
             }
         )
     }

@@ -168,4 +168,3 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 [7]: https://learn.microsoft.com/powershell/utility-modules/psscriptanalyzer/rules/avoidtrailingwhitespace ""
 
 https://www.markdownguide.org/basic-syntax/ "Markdown guide"]()
-

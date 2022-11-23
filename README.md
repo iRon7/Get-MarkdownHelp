@@ -1,6 +1,15 @@
 # Get-MarkdownHelp
 Creates a markdown Readme string from the comment based help of a command
 
+## Syntax
+```JavaScript
+Get-MarkdownHelp
+    [-CommandName] <string>
+    [[-PSCodePattern] <string>]
+    [[-AlternateEOL] <string>]
+    [<CommonParameters>]
+```
+
 ## Description
 The [Get-MarkdownHelp][1] cmdlet retrieves the [comment-based help][2] and converts it to a Markdown page
 similar to the general online PowerShell help pages (as e.g. [`Get-Content`](https://go.microsoft.com/fwlink/?LinkID=2096490)).  

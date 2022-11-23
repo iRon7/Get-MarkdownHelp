@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.2
+.VERSION 1.0.3
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -333,10 +333,10 @@ process {
         "# $Name"
         GetMarkDown $Help.Synopsis
 
+        $Syntax = Get-Command $CommandName -Syntax
         if ($Syntax) {
             '## Syntax'
             '```JavaScript'
-            $Syntax = Get-Command $CommandName -Syntax
             foreach ($Line in ($Syntax -split '[\r\n]+')) {
                 $SyntaxName, $Parameters = $Line -Split ' (?=\-|\[\-|\[\[|\[\<)'
                 if ($SyntaxName -eq $CommandName) {

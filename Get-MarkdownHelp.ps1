@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.3
+.VERSION 1.0.4
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -316,9 +316,9 @@ process {
     $Script:Indent = $Null
     $Command = Get-Command $CommandName
     $Name = [System.IO.Path]::GetFileNameWithoutExtension($Command.Name)
-    $Help = $Null
 
-    $Help = GetHelp $Command.ScriptBlock
+    $Content = if ($CommandName.Contains('\') -or $CommandName.Contains('/')) { Get-Content -Raw $CommandName } else { $Command.ScriptBlock }
+    $Help = GetHelp $Content
     if (!$Help -and $Command.Module) {
         $Help = GetHelp (Get-Content -Raw $Command.Module.Path)
     }

@@ -12,9 +12,9 @@ Get-MarkdownHelp
 
 ## Description
 The [Get-MarkdownHelp][1] cmdlet retrieves the [comment-based help][2] and converts it to a Markdown page
-similar to the general online PowerShell help pages (as e.g. [`Get-Content`](https://go.microsoft.com/fwlink/?LinkID=2096490)).  
+similar to the general online PowerShell help pages (as e.g. [`Get-Content`](https://go.microsoft.com/fwlink/?LinkID=113310)).  
 Note that this cmdlet *doesn't* support `XML`-based help files, but has a few extra features for the comment-based
-help as opposed to the native [platyPS][3] [`New-MarkdownHelp`](https://github.com/PowerShell/platyPS/blob/master/docs/New-MarkdownHelp.md):
+help as opposed to the native [platyPS][3] [New-MarkdownHelp](#New-MarkdownHelp):
 
 * **Code Blocks**  
 To create code blocks, indent every line of the block by at least four spaces or one tab relative the **text indent**.
@@ -52,7 +52,7 @@ In this example, the parameter link will refer to the internal [`-AlternateEOL` 
 
 * **Cmdlet Links**  
 **Cmdlet links** are simular to **Quick Links** but contain a cmdlet name where the online help is known. E.g.: `[Get-Content]`.
-In this example, the cmdlet link will refer to the online help of the related [`Get-Content`](https://go.microsoft.com/fwlink/?LinkID=2096490) cmdlet.
+In this example, the cmdlet link will refer to the online help of the related [`Get-Content`](https://go.microsoft.com/fwlink/?LinkID=113310) cmdlet.
 
 ## Examples
 ### Example 1: Display markdown help

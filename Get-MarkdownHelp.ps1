@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.4
+.VERSION 1.0.5
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -152,7 +152,6 @@ begin {
             return ' ' * $Spaces + $This.Text
         }
     }
-
 
     function GetHelpItems([String[]]$Lines) {
         $Key = $Null
@@ -313,14 +312,20 @@ begin {
 }
 
 process {
-    $Script:Indent = $Null
-    $Command = Get-Command $CommandName
-    $Name = [System.IO.Path]::GetFileNameWithoutExtension($Command.Name)
+    $TempName = '__TempFunctionName'
 
-    $Content = if ($CommandName.Contains('\') -or $CommandName.Contains('/')) { Get-Content -Raw $CommandName } else { $Command.ScriptBlock }
-    $Help = GetHelp $Content
+    if ($CommandName.Contains('\') -or $CommandName.Contains('/')) {
+        $Name = [System.IO.Path]::GetFileNameWithoutExtension($CommandName)
+        $Command = New-Item -Path function: -Name $TempName -Value (Get-Content -Raw $CommandName) -Force
+    }
+    else {
+        $Name = $CommandName
+        $Command = Get-Command $Name
+    }
+    $Help = GetHelp $Command.ScriptBlock
     if (!$Help -and $Command.Module) {
-        $Help = GetHelp (Get-Content -Raw $Command.Module.Path)
+        $TempCommand = New-Item -Path function: -Name $TempName -Value (Get-Content -Raw $Command.Module.Path) -Force
+        $Help = GetHelp $TempCommand.ScriptBlock
     }
 
     if ($Help) {
@@ -332,14 +337,13 @@ process {
 
         "# $Name"
         GetMarkDown $Help.Synopsis
-
-        $Syntax = Get-Command $CommandName -Syntax
+        $Syntax = Get-Command $Command.Name -Syntax
         if ($Syntax) {
             '## Syntax'
             '```JavaScript'
             foreach ($Line in ($Syntax -split '[\r\n]+')) {
                 $SyntaxName, $Parameters = $Line -Split ' (?=\-|\[\-|\[\[|\[\<)'
-                if ($SyntaxName -eq $CommandName) {
+                if ($SyntaxName -eq $Command.Name) {
                     $Name
                     foreach ($Parameter in $Parameters) { $Tab + $Parameter }
                 }
@@ -447,4 +451,5 @@ process {
        }
     }
     else { Write-Error "The comment based help for ""$CommandName"" could not be found" }
+    if (Get-Item -Path function:$TempName -ErrorAction SilentlyContinue) { Remove-Item -Path function:$TempName }
 }

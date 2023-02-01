@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD033 -->
 # Get-MarkdownHelp
 
 Creates a markdown Readme string from the comment based help of a command
@@ -17,7 +18,7 @@ Get-MarkdownHelp
 The [Get-MarkdownHelp][1] cmdlet retrieves the [comment-based help][2] and converts it to a Markdown page
 similar to the general online PowerShell help pages (as e.g. [`Get-Content`](https://go.microsoft.com/fwlink/?LinkID=2096490)).  
 Note that this cmdlet *doesn't* support `XML`-based help files, but has a few extra features for the comment-based
-help as opposed to the native [platyPS][3] [New-MarkdownHelp](#New-MarkdownHelp):
+help as opposed to the native [platyPS][3] [`New-MarkdownHelp`](https://github.com/PowerShell/platyPS/blob/master/docs/New-MarkdownHelp.md):
 
 * **Code Blocks**  
 
@@ -25,7 +26,7 @@ To create code blocks, indent every line of the block by at least four spaces or
 The **text indent** is defined by the smallest indent of the current - and the `.SYNOPSIS` section.  
 Code blocks are automatically [fenced][4] for default PowerShell color coding.  
 The usual comment-based help prefix for code (`PS. \>`) might also be used to define a code lines.
-For more details, see the [`-PSCodePattern` parameter](#-PSCodePattern).
+For more details, see the [`-PSCodePattern` parameter](#-pscodepattern).
 
 * **Titled Examples**  
 
@@ -57,7 +58,7 @@ Any phrase existing of a combination alphanumeric characters, spaces, underscore
 
 **Parameter links** are similar to **Quick Links** but start with a dash and contain an existing parameter name possibly
 followed by the word "parameter". E.g.: `[-AlternateEOL]` or `[-AlternateEOL parameter]`.
-In this example, the parameter link will refer to the internal [parameter](AlternateEOL).
+In this example, the parameter link will refer to the internal [`-AlternateEOL` parameter](#-alternateeol).
 
 * **Cmdlet Links**  
 
@@ -93,7 +94,7 @@ Get-MarkdownHelp .\MyScript.ps1 |Set-Content .\Readme.md
 
 ## Parameter
 
-#### <a id="-commandname">**`-CommandName <String>`**</a>
+### <a id="-commandname">**`-CommandName <String>`**</a>
 
 Specifies the name of the cmdlet that contains the [comment based help][2].
 
@@ -106,7 +107,7 @@ Specifies the name of the cmdlet that contains the [comment based help][2].
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-#### <a id="-pscodepattern">**`-PSCodePattern <String>`**</a>
+### <a id="-pscodepattern">**`-PSCodePattern <String>`**</a>
 
 Specifies the PowerShell code pattern used by the get-help cmdlet.
 The native [`Get-Help`] cmdlet automatically adds a PowerShell prompt (`PS \>`) to the first line of an example if not yet exist.
@@ -121,10 +122,10 @@ a code block by this `Get-MarkdownHelp` cmdlet.
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-#### <a id="-alternateeol">**`-AlternateEOL <String>`**</a>
+### <a id="-alternateeol">**`-AlternateEOL <String>`**</a>
 
 The recommended way to force a line break or new line (`<br>`) in markdown is to end a line with two or more spaces but as that
-might cause a _[Avoid Trailing Whitespace][7]_ warning, you might also consider to use an alternate EOL marker.  
+might cause a *[Avoid Trailing Whitespace][7]* warning, you might also consider to use an alternate EOL marker.  
 Any alternate EOL marker (at the end of the line) will be replaced by two spaces by this `Get-MarkdownHelp` cmdlet.
 
 <table>
@@ -157,3 +158,4 @@ Any alternate EOL marker (at the end of the line) will be replaced by two spaces
 [3]: https://github.com/PowerShell/platyPS "PlatyPS MALM renderer"
 [4]: https://www.markdownguide.org/extended-syntax/#fenced-code-blocks "Fenced Code Blocks"
 [5]: https://www.markdownguide.org/basic-syntax/#reference-style-links "Reference-style Links"
+[7]: https://learn.microsoft.com/powershell/utility-modules/psscriptanalyzer/rules/avoidtrailingwhitespace ""

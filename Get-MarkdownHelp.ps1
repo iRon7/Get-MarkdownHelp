@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.5
+.VERSION 1.0.6
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -26,6 +26,7 @@
     help as opposed to the native [platyPS][3] [New-MarkdownHelp]:
 
     * **Code Blocks**\
+
     To create code blocks, indent every line of the block by at least four spaces or one tab relative the **text indent**.
     The **text indent** is defined by the smallest indent of the current - and the `.SYNOPSIS` section.\
     Code blocks are automatically [fenced][4] for default PowerShell color coding.\
@@ -33,14 +34,17 @@
     For more details, see the [-PSCodePattern parameter].
 
     * **Titled Examples**\
+
     Examples can be titled by adding an (extra) hash (`#`) in front of the first line in the section.
     This line will be removed from the section and added to the header of the example.
 
     * **Links**\
-    > As Per markdown definititon, The first part of a [reference-style link][5] is formatted with two sets of brackets.
+
+    > As Per markdown definition, The first part of a [reference-style link][5] is formatted with two sets of brackets.
     > The first set of brackets surrounds the text that should appear linked. The second set of brackets displays
     > a label used to point to the link you're storing elsewhere in your document, e.g.: `[rabbit-hole][1]`.
     > The second part of a reference-style link is formatted with the following attributes:
+
     > * The label, in brackets, followed immediately by a colon and at least one space (e.g., `[label]:` ).
     > * The URL for the link, which you can optionally enclose in angle brackets.
     > * The optional title for the link, which you can enclose in double quotes, single quotes, or parentheses.
@@ -49,18 +53,21 @@
     listed in the end of the document. The reference will be hidden if the label is an explicit empty string(`""`).
 
     * **Quick Links**\
+
     Any phrase existing of a combination alphanumeric characters, spaces, underscores and dashes between squared brackets
     (e.g. `[my link]`) will be linked to the (automatic) anchor id in the document, e.g.: `[my link](#my-link)`.
 
     > **Note:** There is no confirmation if the internal anchor really exists.
 
     * **Parameter Links**\
+
     **Parameter links** are similar to **Quick Links** but start with a dash and contain an existing parameter name possibly
     followed by the word "parameter". E.g.: `[-AlternateEOL]` or `[-AlternateEOL parameter]`.
     In this example, the parameter link will refer to the internal [-AlternateEOL parameter].
 
     * **Cmdlet Links**\
-    **Cmdlet links** are simular to **Quick Links** but contain a cmdlet name where the online help is known. E.g.: `[Get-Content]`.
+
+    **Cmdlet links** are similar to **Quick Links** but contain a cmdlet name where the online help is known. E.g.: `[Get-Content]`.
     In this example, the cmdlet link will refer to the online help of the related [Get-Content] cmdlet.
 
 .INPUTS
@@ -80,7 +87,7 @@
 
 .PARAMETER AlternateEOL
     The recommended way to force a line break or new line (`<br>`) in markdown is to end a line with two or more spaces but as that
-    might cause a _[Avoid Trailing Whitespace][7]_ warning, you might also consider to use an alternate EOL marker.\
+    might cause a *[Avoid Trailing Whitespace][7]* warning, you might also consider to use an alternate EOL marker.\
     Any alternate EOL marker (at the end of the line) will be replaced by two spaces by this `Get-MarkdownHelp` cmdlet.
 
 .EXAMPLE
@@ -127,7 +134,7 @@ begin {
 
     $UriLabelPattern  = '\[(?<Label>.+)\]\:'
     $UriPattern       = '\<?(?<Uri>\w+://\S+)\>?'
-    $UriTitlePattern  = '("(?<Title>.+)"|''(?<Title>.*)''|\((?<Title>.?)\))'
+    $UriTitlePattern  = '("(?<Title>.*)"|''(?<Title>.*)''|\((?<Title>.?)\))'
     $ReferencePattern = "^($UriLabelPattern\s+)?$UriPattern(\s+$UriTitlePattern)?$"
     $AlternateEOL     = [regex]::Escape($AlternateEOL) + '\s*$'
 
@@ -231,12 +238,12 @@ begin {
         $CallBack = {
             $Label = $Args[0].Value.TrimStart('[').TrimEnd(']')
             if ( $Label -Match '^(-\w+)(\s+parameter)?$' -and $ParamNames -eq $Matches[1].TrimStart('-') ) {
-                "[``$($Matches[1])``$($Matches[2])](#$($Matches[1]))"
+                "[``$($Matches[1])``$($Matches[2])](#$($Matches[1].ToLower()))"
             }
             else {
                 $Command = Get-Command $Label -ErrorAction SilentlyContinue
                 if ($Command.HelpUri) { "[``$Label``]($($Command.HelpUri))" }
-                else { "[$Label](#$($Label -Replace '\W+', '-'))" }
+                else { "[$Label](#$($Label.ToLower() -Replace '\W+', '-'))" }
             }
         }
         $Index = 0
@@ -280,6 +287,7 @@ begin {
                 if ($Block -isnot [int]) { # -eq $CodeOffset
                     if ($Block -is [System.Text.StringBuilder]) { QuickLinks $Block.ToString() }
                     $Block = $CodeOffset
+                    ''
                     '```PowerShell'
                 }
                 else { @('') * $SkipLines }
@@ -288,14 +296,21 @@ begin {
             }
             else { # start or continue text block
                 if ($Block -is [int]) { '```' }
-                elseif ($Skiplines -ge 1) { $Null = $Block.AppendLine() }
+                elseif ($Block -is [System.Text.StringBuilder]) {
+                    if ($Block.Length) { $Null = $Block.AppendLine() }
+                    if ($Skiplines -ge 1) { $Null = $Block.AppendLine() }
+                }
                 if ($Block -isnot [System.Text.StringBuilder]) { $Block = [System.Text.StringBuilder]::new() }
                 $Text = $Sentence.Text -Replace $AlternateEOL, '  '
-                $Null = $Block.AppendLine($Text)
+                $Null = $Block.Append($Text)
                 $SkipLines = 0
             }
         }
-        if ($Block -is [System.Text.StringBuilder]) { QuickLinks $Block.ToString() } elseif ($Block -is [Int]) { '```' }
+        if ($Block -is [System.Text.StringBuilder]) {
+            QuickLinks $Block.ToString()
+        } elseif ($Block -is [Int]) {
+            '```'
+        }
     }
 
     function GetTypeLink($TypeName) {
@@ -329,6 +344,8 @@ process {
     }
 
     if ($Help) {
+        '<!-- markdownlint-disable MD033 -->'
+
         Write-Debug ($Help |ConvertTo-Json -Depth 9)
 
         $Ast = [System.Management.Automation.Language.Parser]::ParseInput($Command.ScriptBlock,[ref]$Null,[ref]$Null)
@@ -336,10 +353,14 @@ process {
         $ParamNames = @(if ($Params) { $Params.Name.VariablePath.UserPath })
 
         "# $Name"
+        ''
         GetMarkDown $Help.Synopsis
+
         $Syntax = Get-Command $Command.Name -Syntax
         if ($Syntax) {
+            ''
             '## Syntax'
+            ''
             '```JavaScript'
             foreach ($Line in ($Syntax -split '[\r\n]+')) {
                 $SyntaxName, $Parameters = $Line -Split ' (?=\-|\[\-|\[\[|\[\<)'
@@ -349,39 +370,51 @@ process {
                 }
             }
             '```'
-            ''
         }
 
 
         if ($Help.Contains('Description')) {
+            ''
             '## Description'
+            ''
             GetMarkDown $Help.Description
         }
 
         if ($Help.Contains('Example')) {
+            ''
             '## Examples'
+
             for ($i = 0; $i -lt $Help.Example.Count; $i++) {
                 $Count = $Help.Example[$i].Count
-                if ($Count -and $Help.Example[$i][0].Text.StartsWith('#')) {
+                if ($Count -gt 1 -and $Help.Example[$i][0].Text.StartsWith('#')) {
+                    ''
                     "### Example $($i + 1): " + $Help.Example[$i][0].Text.SubString(1).Trim()
-                    if ($Count -gt 0) { GetMarkDown $Help.Example[$i][1..($Count - 1)] }
+                    ''
+                    GetMarkDown $Help.Example[$i][1..($Count - 1)]
                 }
                 else {
                     "### Example $($i + 1):"
+                    ''
                     GetMarkDown $Help.Example[$i]
+                    ''
                 }
             }
         }
 
         if ($Params) {
+            ''
             '## Parameter'
             foreach ($Param in $Params) {
                 $Name = $Param.Name.VariablePath.UserPath
                 $Parameter  = $Command.Parameters[$Name]
                 $Type = $Parameter.parameterType.Name
                 $_Type = if ($Type -ne 'SwitchParameter') { " <$Type>" }
-                "#### <a id=""-$($Name.ToLower())"">**``-$Name$_Type``**</a>"
-                if ($Help.Contains('Parameter') -and $Help.Parameter.Contains($Name)) { GetMarkDown $Help.Parameter[$Name] } else { '' }
+                ''
+                "### <a id=""-$($Name.ToLower())"">**``-$Name$_Type``**</a>"
+                if ($Help.Contains('Parameter') -and $Help.Parameter.Contains($Name)) {
+                    ""
+                    GetMarkDown $Help.Parameter[$Name]
+                }
                 ''
                 $Dictionary = [Ordered]@{}
                 $Attributes = $Parameter.Attributes
@@ -409,22 +442,27 @@ process {
                 '<table>'
                 $Dictionary.get_Keys().ForEach{ "<tr><td>$($_):</td><td>$($Dictionary[$_])</td></tr>"}
                 '</table>'
-                ''
             }
         }
 
         if ($Help.Contains('Inputs')) {
+            ''
             '## Inputs'
+            ''
             GetMarkDown $Help.Inputs
         }
 
         if ($Help.Contains('Outputs')) {
+            ''
             '## Outputs'
+            ''
             GetMarkDown $Help.Outputs
         }
 
         if ($Help.Contains('Link')) {
+            ''
             '## Related Links'
+            ''
             $LinkRefences = [Collections.Generic.List[String]]::new()
             ForEach ($Sentence in $Help.Link) {
                 $Text = $Sentence.Text
@@ -445,7 +483,7 @@ process {
                 if ($Link) { "* $Link" }
             }
             if ($LinkRefences) {
-                ""
+                ''
                 @($LinkRefences).ForEach{ $_ }
             }
        }

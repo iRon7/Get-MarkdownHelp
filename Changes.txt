@@ -1,0 +1,5 @@
+1.0.2 Removed UTF8 character
+1.0.3 fixed Syntax issue
+1.0.4 uses script content vs. function content
+1.0.5 Compliant with Learn Authoring Pack
+1.0.6 Fixed plain link

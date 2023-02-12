@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.7
+.VERSION 1.0.8
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -32,6 +32,9 @@
     Code blocks are automatically [fenced][4] for default PowerShell color coding.\
     The usual comment-based help prefix for code (`PS. \>`) might also be used to define a code lines.
     For more details, see the [-PSCodePattern parameter].
+
+    As defined by the standard help interpreter, code blocks (including fenced code blocks) can't include help keywords.
+    Meaning (fenced) code blocks will end at the next section defined by `.<help keyword>`.
 
     * **Titled Examples**
 
@@ -128,6 +131,12 @@
 )
 
 begin {
+    enum MDBlock {
+        None
+        Text
+        Code
+        Fenced
+    }
     $TabSize = 4
     $Tab = ' ' * $TabSize
     $CodePrefix = "(?<=^\s*)$PSCodePattern"
@@ -269,48 +278,51 @@ begin {
             }
         }
 
-        $SkipLines = [int]::MinValue
-
-        $Block = $Null
+        $SkipLines = 0
+        [MDBlock]$MDBlock = 'None'
+        
         foreach ($Sentence in $Sentences) {
-            if (!$Sentence.Text) { $SkipLines++ }
-            elseif ($Block -is [String]) { # Continue fenced code block
+            if ($MDBlock -eq 'Fenced') {
                 $Sentence.Indent(-$TextOffset)
-                if ($Sentence.Text -Match "^$Block" ) { $Block = $Null }
+                if ($Sentence.Text -Match $Fence ) {
+                    $SkipLines = 1
+                    $MDBlock = 'None'
+                }
             }
-            elseif ($Sentence.Text -Match '^`{3,4}') { # Start fenced code block
-                if ($Block -is [System.Text.StringBuilder]) { QuickLinks $Block.ToString() }
-                $Block = $Matches[0]
+            elseif ($Sentence.Text -Match '^`{3,4}') { # Either: ``` or: ````
+                if ($SkipLines) { '' }
                 $Sentence.Indent(-$TextOffset)
+                $SkipLines = 0
+                $MDBlock = 'Fenced'
+                $Fence = $Matches[0]
             }
-            elseif ($Sentence.Offset -ge $TextOffset + $TabSize) { # Start or continue code block
-                if ($Block -isnot [int]) { # -eq $CodeOffset
-                    if ($Block -is [System.Text.StringBuilder]) { QuickLinks $Block.ToString() }
-                    $Block = $CodeOffset
+            elseif (!$Sentence.Text) { $SkipLines++ }
+            elseif ($Sentence.Offset -lt $TextOffset + $TabSize) { # Text block
+                if ($MDBlock -eq 'Text') {
+                    if ($SkipLines) { '' }
+                }
+                elseif ($MDBlock -eq 'Code') {
+                    '```'
+                    ''
+                }
+                QuickLinks ($Sentence.Text -Replace $AlternateEOL, '  ')
+                $SkipLines = 0
+                $MDBlock = 'Text'
+            }
+            else { # if ($Sentence.Offset -ge $TextOffset + $TabSize) { # Code block
+                if ($MDBlock -eq 'Code') {
+                    if ($SkipLines) { @('') * $SkipLines }
+                }
+                elseif ($MDBlock -eq 'Text') {
                     ''
                     '```PowerShell'
                 }
-                else { @('') * $SkipLines }
                 $Sentence.Indent(-$TextOffset - $TabSize)
                 $SkipLines = 0
-            }
-            else { # start or continue text block
-                if ($Block -is [int]) { '```' }
-                elseif ($Block -is [System.Text.StringBuilder]) {
-                    if ($Block.Length) { $Null = $Block.AppendLine() }
-                    if ($Skiplines -ge 1) { $Null = $Block.AppendLine() }
-                }
-                if ($Block -isnot [System.Text.StringBuilder]) { $Block = [System.Text.StringBuilder]::new() }
-                $Text = $Sentence.Text -Replace $AlternateEOL, '  '
-                $Null = $Block.Append($Text)
-                $SkipLines = 0
+                $MDBlock = 'Code'
             }
         }
-        if ($Block -is [System.Text.StringBuilder]) {
-            QuickLinks $Block.ToString()
-        } elseif ($Block -is [Int]) {
-            '```'
-        }
+        if ('Code', 'Fenced' -eq $MDBlock) { '```' }
     }
 
     function GetTypeLink($TypeName) {

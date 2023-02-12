@@ -29,7 +29,7 @@ The usual comment-based help prefix for code (`PS. \>`) might also be used to de
 For more details, see the [`-PSCodePattern` parameter](#-pscodepattern).
 
 As defined by the standard help interpreter, code blocks (including fenced code blocks) can't include help keywords.
-Meaning (fenced) code blocks end at the next section defined by `.<help keyword>`.
+Meaning (fenced) code blocks will end at the next section defined by `.<help keyword>`.
 
 * **Titled Examples**
 

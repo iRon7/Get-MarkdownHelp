@@ -20,7 +20,7 @@ similar to the general online PowerShell help pages (as e.g. [`Get-Content`](htt
 Note that this cmdlet *doesn't* support `XML`-based help files, but has a few extra features for the comment-based
 help as opposed to the native [platyPS][3] [`New-MarkdownHelp`](https://github.com/PowerShell/platyPS/blob/master/docs/New-MarkdownHelp.md):
 
-* **Code Blocks**  
+* **Code Blocks**
 
 To create code blocks, indent every line of the block by at least four spaces or one tab relative the **text indent**.
 The **text indent** is defined by the smallest indent of the current - and the `.SYNOPSIS` section.  
@@ -28,12 +28,15 @@ Code blocks are automatically [fenced][4] for default PowerShell color coding.
 The usual comment-based help prefix for code (`PS. \>`) might also be used to define a code lines.
 For more details, see the [`-PSCodePattern` parameter](#-pscodepattern).
 
-* **Titled Examples**  
+As defined by the standard help interpreter, code blocks (including fenced code blocks) can't include help keywords.
+Meaning (fenced) code blocks end at the next section defined by `.<help keyword>`.
+
+* **Titled Examples**
 
 Examples can be titled by adding an (extra) hash (`#`) in front of the first line in the section.
 This line will be removed from the section and added to the header of the example.
 
-* **Links**  
+* **Links**
 
 > As Per markdown definition, The first part of a [reference-style link][5] is formatted with two sets of brackets.
 > The first set of brackets surrounds the text that should appear linked. The second set of brackets displays
@@ -47,20 +50,20 @@ This line will be removed from the section and added to the header of the exampl
 For the comment-base help implementation, the second part should be placed in the `.LINK` section to automatically
 listed in the end of the document. The reference will be hidden if the label is an explicit empty string(`""`).
 
-* **Quick Links**  
+* **Quick Links**
 
 Any phrase existing of a combination alphanumeric characters, spaces, underscores and dashes between squared brackets
 (e.g. `[my link]`) will be linked to the (automatic) anchor id in the document, e.g.: `[my link](#my-link)`.
 
 > **Note:** There is no confirmation if the internal anchor really exists.
 
-* **Parameter Links**  
+* **Parameter Links**
 
 **Parameter links** are similar to **Quick Links** but start with a dash and contain an existing parameter name possibly
 followed by the word "parameter". E.g.: `[-AlternateEOL]` or `[-AlternateEOL parameter]`.
 In this example, the parameter link will refer to the internal [`-AlternateEOL` parameter](#-alternateeol).
 
-* **Cmdlet Links**  
+* **Cmdlet Links**
 
 **Cmdlet links** are similar to **Quick Links** but contain a cmdlet name where the online help is known. E.g.: `[Get-Content]`.
 In this example, the cmdlet link will refer to the online help of the related [`Get-Content`](https://go.microsoft.com/fwlink/?LinkID=2096490) cmdlet.
@@ -125,7 +128,7 @@ a code block by this `Get-MarkdownHelp` cmdlet.
 ### <a id="-alternateeol">**`-AlternateEOL <String>`**</a>
 
 The recommended way to force a line break or new line (`<br>`) in markdown is to end a line with two or more spaces but as that
-might cause a *[Avoid Trailing Whitespace][7]* warning, you might also consider to use an alternate EOL marker.  
+might cause an *[Avoid Trailing Whitespace][7]* warning, you might also consider to use an alternate EOL marker.  
 Any alternate EOL marker (at the end of the line) will be replaced by two spaces by this `Get-MarkdownHelp` cmdlet.
 
 <table>

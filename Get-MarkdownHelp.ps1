@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.1.0
+.VERSION 1.1.1
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -74,13 +74,17 @@
     In this example, the cmdlet link will refer to the online help of the related [Get-Content] cmdlet.
 
 .INPUTS
-    `String` (command name)
+    A (reference to a) command or module
 
 .OUTPUTS
     `String[]`
 
-.PARAMETER CommandName
-    Specifies the name of the cmdlet that contains the [comment based help][2].
+.PARAMETER Source
+    The source of the commented help.
+    This might a command or module by it name or file location.
+
+.PARAMETER Command
+    An embedded command that contains the parameters or actual commented help.
 
 .PARAMETER PSCodePattern
     Specifies the PowerShell code pattern used by the get-help cmdlet.

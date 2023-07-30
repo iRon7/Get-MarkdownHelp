@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.8
+.VERSION 1.1.0
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -123,10 +123,18 @@
     https://www.markdownguide.org/basic-syntax/ "Markdown guide"
 #>
 
-[CmdletBinding(DefaultParameterSetName='Html')][OutputType([Object[]])] param(
-    [Parameter(ValueFromPipeLine = $True, ValueFromPipelineByPropertyName = $True, Mandatory = $True)]
-    [Alias('Name')][String]$CommandName,
+using NameSpace System.Management.Automation
+using NameSpace System.Management.Automation.Language
+
+[CmdletBinding()][OutputType([String[]])] param(
+    [Parameter(ValueFromPipeLine = $True, ValueFromPipelineByPropertyName = $True)]
+    $Source,
+
+    [Parameter(ValueFromPipelineByPropertyName = $True)]
+    $Command,
+
     [String]$PSCodePattern = 'PS.*\>',
+
     [String]$AlternateEOL = '\'
 )
 
@@ -169,8 +177,25 @@ begin {
         }
     }
 
+    function GetContent ($Source) {
+
+            if ($Source -is [AliasInfo]) { $Source = $Source.ResolvedCommand }
+
+            if ($Source -is [Ast])          { $Source.Extent.Text }
+        elseif ($Source -is [ScriptBlock])  { $Source }
+        elseif ($Source -is [CommandInfo])  { $Source.ScriptBlock }
+        elseif ($Source -is [PSModuleInfo]) { Get-Content -Raw -LiteralPath $Source.Path }
+        elseif ($Source -is [String])       { Get-Content -Raw -LiteralPath $Source }
+        else   { Throw "Unknown source type: $($Source.PSTypeNames)" }
+    }
+
+    function StopError($Exception, $Id = 'IncorrectArgument', $Group = [Management.Automation.ErrorCategory]::SyntaxError, $Object){
+        if ($Exception -isnot [Exception]) { $Exception = [ArgumentException]$Exception }
+        $PSCmdlet.ThrowTerminatingError([System.Management.Automation.ErrorRecord]::new($Exception, $Id, $Group, $Object))
+    }
+
     function GetHelpItems([String[]]$Lines) {
-        $Key = $Null
+        $Key, $Item = $Null
         $Help = @{}
         foreach ($Line in $Lines) {
             $Sentence = [Sentence]($Line -Replace $CodePrefix, $Tab)
@@ -202,10 +227,10 @@ begin {
         $Help
     }
 
-    function GetHelp([String]$Script) {
+    function GetHelp([String]$Content) {
         $Help = $Null
         $Lines = [Collections.Generic.List[String]]::new()
-        foreach ($Token in [System.Management.Automation.PSParser]::Tokenize($Script, [Ref]$Null)) {
+        foreach ($Token in [PSParser]::Tokenize($Content, [Ref]$Null)) {
             if ($Token.Type -eq 'Comment') {
                 if ($Token.Content.StartsWith('#') ) {
                     $Lines.Add($Token.Content.SubString(1))
@@ -280,7 +305,7 @@ begin {
 
         $SkipLines = 0
         [MDBlock]$MDBlock = 'None'
-        
+
         foreach ($Sentence in $Sentences) {
             if ($MDBlock -eq 'Fenced') {
                 $Sentence.Indent(-$TextOffset)
@@ -336,171 +361,273 @@ begin {
             $TypeName
         }
     }
+
+    function GetInfo($Command) {
+        if ($Command -is [String] -and !$Command.Contains("`n"))  {
+            if ($Test = Get-Command $Command -ErrorAction SilentlyContinue) { $Command = $Test }
+        }
+        if ($Command -is [ApplicationInfo] -and ($Test = Import-Module $Command.Source -PassThru)) { $Command = $Test }
+        if ($Command -and ($Test = Get-Module  $Command -ErrorAction SilentlyContinue)) { $Command = $Test }
+        if ($Command -is [AliasInfo]) { $Command = $Command.ResolvedCommand }
+        if ($Command -is [String] -and ($Test = New-Item -Path function:\ -Name 'Unknown' -Value $Command.ScriptBlock -Force -ErrorAction SilentlyContinue)) { $Command = $Test }
+        $Command
+    }
+
 }
 
 process {
-    $TempName = '__TempFunctionName'
 
-    if ($CommandName.Contains('\') -or $CommandName.Contains('/')) {
-        $Name = [System.IO.Path]::GetFileNameWithoutExtension($CommandName)
-        $Command = New-Item -Path function: -Name $TempName -Value (Get-Content -Raw $CommandName) -Force
+    # https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.commandtypes
+
+    # CommandType       Example
+    # -----------       -------
+    # Alias             Get-Command GCI
+    # All
+    # Application       Get-Command .\Test.psm1
+    # Cmdlet            Get-Command Write-Host
+    # Configuration
+    # ExternalScript    Get-Command .\Test.ps1
+    # Filter
+    # Function          New-Item -Path function: -Name $Name -Value $Value
+    # Script            Get-Module PSReadLine
+
+
+    $Source  = GetInfo $Source
+    $Command = GetInfo $Command
+
+    if (!$Source -and $Command) {   # $Source is the actual command container (if exists)
+        $Source = $Command
+        $Command = $Null
     }
-    else {
-        $Name = $CommandName
-        $Command = Get-Command $Name
+
+    if ($Source -is [CommandInfo] -and $Source.ModuleName -and !$Command) {
+        $Command = Import-Module $Source.ModuleName -PassThru
     }
-    $Help = GetHelp $Command.ScriptBlock
-    if (!$Help -and $Command.Module) {
-        $TempCommand = New-Item -Path function: -Name $TempName -Value (Get-Content -Raw $Command.Module.Path) -Force
-        $Help = GetHelp $TempCommand.ScriptBlock
+    elseif ($Command -is [CommandInfo] -and $Command.ModuleName -and !$Command) {
+        $Source = Import-Module $Contact.ModuleName -PassThru
     }
 
-    if ($Help) {
-        '<!-- markdownlint-disable MD033 -->'
+    if ($Source -and $Command) {
+        if ($Source -is [String] -and $Command -is [CommandInfo]) {
+            . $Command
+            $Source  = GetInfo $Source
+        }
+        elseif ($Command -is [String] -and $Source -is [CommandInfo]) {
+            . $Command
+            $Source  = GetInfo $Source
+        }
+    }
 
-        Write-Debug ($Help |ConvertTo-Json -Depth 9)
+    if ($Source -isnot [PSModuleInfo] -and $Command -is [PSModuleInfo]) {
+        $Source, $Command = $Command, $Source
+        if ($Command -is [String] -and $Source.ExportedFunctions -eq $Command) { $Command = Get-Command $Command }
+    }
 
-        $Ast = [System.Management.Automation.Language.Parser]::ParseInput($Command.ScriptBlock,[ref]$Null,[ref]$Null)
-        $Params = @(if ($Ast.ParamBlock) { $Ast.ParamBlock.FindAll({$Args[0] -is [System.Management.Automation.Language.ParameterAst]}, $True) })
-        $ParamNames = @(if ($Params) { $Params.Name.VariablePath.UserPath })
+    if ($Source -is [PSModuleInfo]) {
+         $ExportedName = $Source.ExportedCommands.Keys
+         if ($Command) {
+            if (-not ($ExportedName -eq $Command)) { StopError "Source command '$Command' doesn't exist" }
+            $Command = $Command, $Source
+        }
+        else {
+            $Exported = $Source.ExportedCommands.Values.Where{ $_ -is [CommandInfo] }
+            if (!$Exported) { StopError "No exported commands found for $Source" }
+            if ($Exported.Count -eq 1) { $Command = $Exported, $Source }
+            elseif ($ExportedName -eq $Source.Name) { $Command = $Source.ExportedCommands[$Source.Name], $Source }
+            else {
+                Write-Warning "Multiple exported commands found for $Source"
+                $Command = $Source, $Exported[0]
+            }
+        }
+    }
+    elseif ($Command -is [CommandInfo]) { $Command = $Command, $Source }
+    elseif ($Command) { StopError "Can't find command '$Command'" }
+    else { $Command = $Source } # $Source -isnot [PSModuleInfo]
 
-        "# $Name"
+    $Help = $Null
+    foreach ($Item in @($Command)) {
+        $Content = GetContent $Item
+        $Help = GetHelp $Content
+        if ($Help) { break }
+    }
+    if (!$Help) { StopError "Can't find comment base help in: $Command" }
+
+#    Write-Debug "Help: [$($Help.PSTypeNames[0])]$Command"
+
+    $Ast = $Null
+    foreach ($Item in @($Command)) {
+        $Content = GetContent $Item
+        $Ast = [Parser]::ParseInput($Content, [ref]$Null, [ref]$Null)
+        if ($Ast.ParamBlock) { break }
+    }
+    if ($ScriptBlockAst) { StopError "Can't find parameter block in: $Command" }
+
+    $Parameters = $Ast.ParamBlock.Parameters
+    $CommonParams = [PSCmdlet]::CommonParameters + [PSCmdlet]::OptionalCommonParameters
+    $ParameterSets = [Ordered]@{}
+    $Parameters.foreach{
+        $Name =  $_.Name.VariablePath.UserPath
+        $Sets = $_.Attributes.NamedArguments.where{ $_.ArgumentName -eq 'ParameterSetName' }
+        foreach ($Value in @($Sets.Argument.Value)) {
+            $SetName = if ($Value) { "$Value" } else { '__AllParameterSets' }
+             if (!$ParameterSets.Contains($SetName)) { $ParameterSets[$SetName] = [Ordered]@{} }
+            $ParameterSets[$SetName][$Name] = $_ 
+        }
+    }
+    foreach ($SetName in $ParameterSets.get_Keys()) {
+        $ParameterSets[$SetName]['<CommonParameters>'] = $Null
+        if ($Ast.DynamicParamBlock) { $ParameterSets[$SetName]['<DynamicParameters>'] = $Null }
+    }
+
+# Start exporting markdown
+
+    '<!-- markdownlint-disable MD033 -->'
+
+    $Name = if ($Command.Name) { @($Command.Name)[0] } else { 'Unknown' }
+    "# $Name"
+    ''
+    GetMarkDown $Help.Synopsis
+
+    if ($ParameterSets.get_Count()) {
         ''
-        GetMarkDown $Help.Synopsis
-
-        $Syntax = Get-Command $Command.Name -Syntax
-        if ($Syntax) {
-            ''
-            '## Syntax'
+        '## Syntax'
+        
+        foreach ($ParameterSet in $ParameterSets.Values) {
             ''
             '```JavaScript'
-            foreach ($Line in ($Syntax -split '[\r\n]+')) {
-                $SyntaxName, $Parameters = $Line -Split ' (?=\-|\[\-|\[\[|\[\<)'
-                if ($SyntaxName -eq $Command.Name) {
-                    $Name
-                    foreach ($Parameter in $Parameters) { $Tab + $Parameter }
+            foreach ($Name in $ParameterSet.get_Keys()) {
+                $Parameter = $ParameterSet[$Name]
+                $Type, $Default, $Positional, $Optional = $Null
+                if ($ParameterSet[$Name] -is [ParameterAst]) {
+                    $Name       = "-$Name"
+                    $Type       = $Parameter.StaticType.Name
+                    $Default    = $Parameter.DefaultValue
+                    $Positional = $Parameter.Attributes.Position -lt 0
+                    $Optional   = !$Parameter.Attributes.NamedArguments.where{ $_.ArgumentName -eq 'Mandatory' }
                 }
+                if (!$Positional -and !$Optional) { $Name = "[$Name]" }
+                if ($Type -and $Type -ne 'SwitchParameter') { $Name += " <$Type>" }
+                if ($Default) { $Name += " = $Default" }
+                if ($Optional) { $Name = "[$Name]" }
+                $Tab + $Name
             }
             '```'
         }
-
-
-        if ($Help.Contains('Description')) {
-            ''
-            '## Description'
-            ''
-            GetMarkDown $Help.Description
-        }
-
-        if ($Help.Contains('Example')) {
-            ''
-            '## Examples'
-
-            for ($i = 0; $i -lt $Help.Example.Count; $i++) {
-                $Count = $Help.Example[$i].Count
-                if ($Count -gt 1 -and $Help.Example[$i][0].Text.StartsWith('#')) {
-                    ''
-                    "### Example $($i + 1): " + $Help.Example[$i][0].Text.SubString(1).Trim()
-                    ''
-                    GetMarkDown $Help.Example[$i][1..($Count - 1)]
-                }
-                else {
-                    "### Example $($i + 1):"
-                    ''
-                    GetMarkDown $Help.Example[$i]
-                    ''
-                }
-            }
-        }
-
-        if ($Params) {
-            ''
-            '## Parameter'
-            foreach ($Param in $Params) {
-                $Name = $Param.Name.VariablePath.UserPath
-                $Parameter  = $Command.Parameters[$Name]
-                $Type = $Parameter.parameterType.Name
-                $_Type = if ($Type -ne 'SwitchParameter') { " <$Type>" }
-                ''
-                "### <a id=""-$($Name.ToLower())"">**``-$Name$_Type``**</a>"
-                if ($Help.Contains('Parameter') -and $Help.Parameter.Contains($Name)) {
-                    ""
-                    GetMarkDown $Help.Parameter[$Name]
-                }
-                ''
-                $Dictionary = [Ordered]@{}
-                $Attributes = $Parameter.Attributes
-                if ($Null -ne $Attributes.MinLength -and $Null -ne $Attributes.MaxLength) { $Dictionary['Accepted length']           = $Attributes.MinLength - $Attributes.MaxLength }
-                elseif ($Null -ne $Attributes.MinLength)                                  { $Dictionary['Minimal length']            = $Attributes.MinLemgth }
-                elseif ($Null -ne $Attributes.MaxLength)                                  { $Dictionary['Maximal lemgth']            = $Attributes.MaxLength }
-                if ($Null -ne $Attributes.RegexPattern)                                   { $Dictionary['Accepted pattern']          = "<code>$($Attributes.RegexPattern)</code>" }
-                if ($Null -ne $Attributes.MinRange -and $Null -ne $Attributes.MaxRange)   { $Dictionary['Accepted range']            =  $Attributes.MinRange - $Attributes.MaxRange }
-                elseif ($Null -ne $Attributes.MinRange)                                   { $Dictionary['Minimal value']             =  $Attributes.MinRange }
-                elseif ($Null -ne $Attributes.MaxRange)                                   { $Dictionary['Maximal value']             =  $Attributes.MaxRange }
-                if ($Null -ne $Attributes.ScriptBlock)                                    { $Dictionary['Accepted script condition'] =  "<code>$($Attributes.ScriptBlock.ToString().Trim() -Split '\s*[\r?\n]\s*' -Join '; ')</code>" }
-                if ($Null -ne $Attributes.ValidValues)                                    { $Dictionary['Accepted values']           =  $Attributes.ValidValues -Join ', ' }
-                $Dictionary['Type'] = GetTypeLink($Parameter.parameterType)
-                if ($Parameter.Aliases) { $Dictionary['Aliases'] = $Parameter.Aliases -Join ', ' }
-                $Position = if ($Attributes.Position -ge 0) {$Attributes.Position } else { 'Named' }
-                $Position = if ($Attributes.Position -lt 0) { 'Named' }
-                            elseif ($Attributes.Position -ne $Attributes.Position[0]) { $Attributes.Position -Join ', ' }
-                            else { $Attributes.Position[0] }
-                $Dictionary['Position']                   = $Position
-                $DefaultValue                             = if ($Param.DefaultValue) { "<code>$($Param.DefaultValue)</code>" } # https://stackoverflow.com/a/64358608/1701026
-                $Dictionary['Default value']              = $DefaultValue
-                $Dictionary['Accept pipeline input']      = $Attributes.ValueFromPipelineByPropertyName
-                $Globbing = ($Param.Attributes.where{$_.TypeName.Name -eq 'SupportsWildcards'}).Count -gt 0
-                $Dictionary['Accept wildcard characters'] = $Globbing
-                '<table>'
-                $Dictionary.get_Keys().ForEach{ "<tr><td>$($_):</td><td>$($Dictionary[$_])</td></tr>"}
-                '</table>'
-            }
-        }
-
-        if ($Help.Contains('Inputs')) {
-            ''
-            '## Inputs'
-            ''
-            GetMarkDown $Help.Inputs
-        }
-
-        if ($Help.Contains('Outputs')) {
-            ''
-            '## Outputs'
-            ''
-            GetMarkDown $Help.Outputs
-        }
-
-        if ($Help.Contains('Link')) {
-            ''
-            '## Related Links'
-            ''
-            $LinkRefences = [Collections.Generic.List[String]]::new()
-            ForEach ($Sentence in $Help.Link) {
-                $Text = $Sentence.Text
-                $Link = if ($Text -Match $ReferencePattern) {
-                    if ($Matches.Contains('Label')) {
-                        $LinkRefences.Add($Text)
-                        if ($Matches.Contains('Title')) {
-                            if ($Matches['Title']) { "$($Matches['Label']): [$($Matches['Title'])][$($Matches['Label'])]" }
-                        }
-                        else {
-                            "$($Matches['Label']): $($Matches['Uri'])"
-                        }
-                    }
-                    elseif ($Matches.Contains('Title')) {
-                        "[$($Matches['Title'])]($($Matches['Uri']))"
-                    }
-                    else { $Matches['Uri'] }
-                }
-                if ($Link) { "* $Link" }
-            }
-            if ($LinkRefences) {
-                ''
-                @($LinkRefences).ForEach{ $_ }
-            }
-       }
     }
-    else { Write-Error "The comment based help for ""$CommandName"" could not be found" }
-    if (Get-Item -Path function:$TempName -ErrorAction SilentlyContinue) { Remove-Item -Path function:$TempName }
+
+    if ($Help.Contains('Description')) {
+        ''
+        '## Description'
+        ''
+        GetMarkDown $Help.Description
+    }
+
+    if ($Help.Contains('Example')) {
+        ''
+        '## Examples'
+
+        for ($i = 0; $i -lt $Help.Example.Count; $i++) {
+            $Count = $Help.Example[$i].Count
+            if ($Count -gt 1 -and $Help.Example[$i][0].Text.StartsWith('#')) {
+                ''
+                "### Example $($i + 1): " + $Help.Example[$i][0].Text.SubString(1).Trim()
+                ''
+                GetMarkDown $Help.Example[$i][1..($Count - 1)]
+            }
+            else {
+                "### Example $($i + 1):"
+                ''
+                GetMarkDown $Help.Example[$i]
+                ''
+            }
+        }
+    }
+
+    if ($Parameters) {
+        ''
+        '## Parameter'
+        $Parameters.foreach{
+            $Name =  $_.Name.VariablePath.UserPath
+            $Type = $_.parameterType.Name
+            $_Type = if ($Type -ne 'SwitchParameter') { " <$Type>" }
+            ''
+            "### <a id=""-$($Name.ToLower())"">**``-$Name$_Type``**</a>"
+            if ($Help.Contains('Parameter') -and $Help.Parameter.Contains($Name)) {
+                ""
+                GetMarkDown $Help.Parameter[$Name]
+            }
+            ''
+            $Dictionary = [Ordered]@{}
+            $Attributes = $_.Attributes
+            if ($Null -ne $Attributes.MinLength -and $Null -ne $Attributes.MaxLength) { $Dictionary['Accepted length']           = $Attributes.MinLength - $Attributes.MaxLength }
+            elseif ($Null -ne $Attributes.MinLength)                                  { $Dictionary['Minimal length']            = $Attributes.MinLemgth }
+            elseif ($Null -ne $Attributes.MaxLength)                                  { $Dictionary['Maximal lemgth']            = $Attributes.MaxLength }
+            if ($Null -ne $Attributes.RegexPattern)                                   { $Dictionary['Accepted pattern']          = "<code>$($Attributes.RegexPattern)</code>" }
+            if ($Null -ne $Attributes.MinRange -and $Null -ne $Attributes.MaxRange)   { $Dictionary['Accepted range']            =  $Attributes.MinRange - $Attributes.MaxRange }
+            elseif ($Null -ne $Attributes.MinRange)                                   { $Dictionary['Minimal value']             =  $Attributes.MinRange }
+            elseif ($Null -ne $Attributes.MaxRange)                                   { $Dictionary['Maximal value']             =  $Attributes.MaxRange }
+            if ($Null -ne $Attributes.ScriptBlock)                                    { $Dictionary['Accepted script condition'] =  "<code>$($Attributes.ScriptBlock.ToString().Trim() -Split '\s*[\r?\n]\s*' -Join '; ')</code>" }
+            if ($Null -ne $Attributes.ValidValues)                                    { $Dictionary['Accepted values']           =  $Attributes.ValidValues -Join ', ' }
+            $Dictionary['Type'] = GetTypeLink($_.parameterType)
+            $Dictionary['Mandatory'] = [bool]$Attributes.NamedArguments.where{ $_.ArgumentName -eq 'Mandatory' }
+            if ($_.Aliases) { $Dictionary['Aliases'] = $_.Aliases -Join ', ' }
+            $Position = if ($Attributes.Position -ge 0) {$Attributes.Position } else { 'Named' }
+            $Position = if ($Attributes.Position -lt 0) { 'Named' }
+                        elseif ($Attributes.Position -ne $Attributes.Position[0]) { $Attributes.Position -Join ', ' }
+                        else { $Attributes.Position[0] }
+            $Dictionary['Position']                   = $Position
+            $DefaultValue                             = if ($_.DefaultValue) { "<code>$($_.DefaultValue)</code>" } # https://stackoverflow.com/a/64358608/1701026
+            $Dictionary['Default value']              = $DefaultValue
+            $Dictionary['Accept pipeline input']      = $Attributes.ValueFromPipelineByPropertyName
+            $Globbing = ($_.Attributes.where{$_.TypeName.Name -eq 'SupportsWildcards'}).Count -gt 0
+            $Dictionary['Accept wildcard characters'] = $Globbing
+            '<table>'
+            $Dictionary.get_Keys().ForEach{ "<tr><td>$($_):</td><td>$($Dictionary[$_])</td></tr>"}
+            '</table>'
+        }
+    }
+
+    if ($Help.Contains('Inputs')) {
+        ''
+        '## Inputs'
+        ''
+        GetMarkDown $Help.Inputs
+    }
+
+    if ($Help.Contains('Outputs')) {
+        ''
+        '## Outputs'
+        ''
+        GetMarkDown $Help.Outputs
+    }
+
+    if ($Help.Contains('Link')) {
+        ''
+        '## Related Links'
+        ''
+        $LinkRefences = [Collections.Generic.List[String]]::new()
+        ForEach ($Sentence in $Help.Link) {
+            $Text = $Sentence.Text
+            $Link = if ($Text -Match $ReferencePattern) {
+                if ($Matches.Contains('Label')) {
+                    $LinkRefences.Add($Text)
+                    if ($Matches.Contains('Title')) {
+                        if ($Matches['Title']) { "$($Matches['Label']): [$($Matches['Title'])][$($Matches['Label'])]" }
+                    }
+                    else {
+                        "$($Matches['Label']): $($Matches['Uri'])"
+                    }
+                }
+                elseif ($Matches.Contains('Title')) {
+                    "[$($Matches['Title'])]($($Matches['Uri']))"
+                }
+                else { $Matches['Uri'] }
+            }
+            if ($Link) { "* $Link" }
+        }
+        if ($LinkRefences) {
+            ''
+            @($LinkRefences).ForEach{ $_ }
+        }
+    }
 }

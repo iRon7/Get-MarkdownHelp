@@ -99,6 +99,9 @@ Get-MarkdownHelp .\MyScript.ps1 |Set-Content .\Readme.md
 
 ### <a id="-source">**`-Source <>`**</a>
 
+The source of the commented help.
+This might a command or module by it name or file location.
+
 <table>
 <tr><td>Type:</td><td></td></tr>
 <tr><td>Mandatory:</td><td>False</td></tr>
@@ -109,6 +112,8 @@ Get-MarkdownHelp .\MyScript.ps1 |Set-Content .\Readme.md
 </table>
 
 ### <a id="-command">**`-Command <>`**</a>
+
+An embedded command that contains the parameters or actual commented help.
 
 <table>
 <tr><td>Type:</td><td></td></tr>
@@ -152,7 +157,7 @@ Any alternate EOL marker (at the end of the line) will be replaced by two spaces
 
 ## Inputs
 
-`String` (command name)
+A (reference to a) command or module
 
 ## Outputs
 

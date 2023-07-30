@@ -97,7 +97,7 @@ Get-MarkdownHelp .\MyScript.ps1 |Set-Content .\Readme.md
 
 ## Parameter
 
-### <a id="-source">**`-Source <>`**</a>
+### <a id="-source">**`-Source <Object>`**</a>
 
 The source of the commented help.
 This might a command or module by it name or file location.
@@ -111,7 +111,7 @@ This might a command or module by it name or file location.
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-### <a id="-command">**`-Command <>`**</a>
+### <a id="-command">**`-Command <Object>`**</a>
 
 An embedded command that contains the parameters or actual commented help.
 
@@ -124,7 +124,7 @@ An embedded command that contains the parameters or actual commented help.
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-### <a id="-pscodepattern">**`-PSCodePattern <>`**</a>
+### <a id="-pscodepattern">**`-PSCodePattern <String>`**</a>
 
 Specifies the PowerShell code pattern used by the get-help cmdlet.
 The native [`Get-Help`] cmdlet automatically adds a PowerShell prompt (`PS \>`) to the first line of an example if not yet exist.
@@ -140,7 +140,7 @@ a code block by this `Get-MarkdownHelp` cmdlet.
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-### <a id="-alternateeol">**`-AlternateEOL <>`**</a>
+### <a id="-alternateeol">**`-AlternateEOL <String>`**</a>
 
 The recommended way to force a line break or new line (`<br>`) in markdown is to end a line with two or more spaces but as that
 might cause an *[Avoid Trailing Whitespace][7]* warning, you might also consider to use an alternate EOL marker.  

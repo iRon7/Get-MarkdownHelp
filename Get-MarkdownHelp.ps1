@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.1.1
+.VERSION 1.1.2
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -551,11 +551,10 @@ process {
         ''
         '## Parameter'
         $Parameters.foreach{
-            $Name =  $_.Name.VariablePath.UserPath
-            $Type = $_.parameterType.Name
-            $_Type = if ($Type -ne 'SwitchParameter') { " <$Type>" }
+            $Name = $_.Name.VariablePath.UserPath
+            $Type = if ($_.StaticType.Name -ne 'SwitchParameter') { " <$($_.StaticType.Name)>" }
             ''
-            "### <a id=""-$($Name.ToLower())"">**``-$Name$_Type``**</a>"
+            "### <a id=""-$($Name.ToLower())"">**``-$Name$Type``**</a>"
             if ($Help.Contains('Parameter') -and $Help.Parameter.Contains($Name)) {
                 ""
                 GetMarkDown $Help.Parameter[$Name]

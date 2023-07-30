@@ -1,15 +1,15 @@
 <!-- markdownlint-disable MD033 -->
-# Get-MarkdownHelp
+# Get-MarkdownHelp.ps1
 
 Creates a markdown Readme string from the comment based help of a command
 
 ## Syntax
 
 ```JavaScript
-Get-MarkdownHelp
-    [-CommandName] <string>
-    [[-PSCodePattern] <string>]
-    [[-AlternateEOL] <string>]
+    [-Source <Object>]
+    [-Command <Object>]
+    [-PSCodePattern <String> = 'PS.*\>']
+    [-AlternateEOL <String> = '\']
     [<CommonParameters>]
 ```
 
@@ -26,7 +26,7 @@ To create code blocks, indent every line of the block by at least four spaces or
 The **text indent** is defined by the smallest indent of the current - and the `.SYNOPSIS` section.  
 Code blocks are automatically [fenced][4] for default PowerShell color coding.  
 The usual comment-based help prefix for code (`PS. \>`) might also be used to define a code lines.
-For more details, see the [`-PSCodePattern` parameter](#-pscodepattern).
+For more details, see the [-PSCodePattern parameter](#-pscodepattern-parameter).
 
 As defined by the standard help interpreter, code blocks (including fenced code blocks) can't include help keywords.
 Meaning (fenced) code blocks will end at the next section defined by `.<help keyword>`.
@@ -61,7 +61,7 @@ Any phrase existing of a combination alphanumeric characters, spaces, underscore
 
 **Parameter links** are similar to **Quick Links** but start with a dash and contain an existing parameter name possibly
 followed by the word "parameter". E.g.: `[-AlternateEOL]` or `[-AlternateEOL parameter]`.
-In this example, the parameter link will refer to the internal [`-AlternateEOL` parameter](#-alternateeol).
+In this example, the parameter link will refer to the internal [-AlternateEOL parameter](#-alternateeol-parameter).
 
 * **Cmdlet Links**
 
@@ -97,20 +97,29 @@ Get-MarkdownHelp .\MyScript.ps1 |Set-Content .\Readme.md
 
 ## Parameter
 
-### <a id="-commandname">**`-CommandName <String>`**</a>
-
-Specifies the name of the cmdlet that contains the [comment based help][2].
+### <a id="-source">**`-Source <>`**</a>
 
 <table>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
-<tr><td>Aliases:</td><td>Name</td></tr>
-<tr><td>Position:</td><td>0</td></tr>
+<tr><td>Type:</td><td></td></tr>
+<tr><td>Mandatory:</td><td>False</td></tr>
+<tr><td>Position:</td><td>Named</td></tr>
 <tr><td>Default value:</td><td></td></tr>
-<tr><td>Accept pipeline input:</td><td>True</td></tr>
+<tr><td>Accept pipeline input:</td><td></td></tr>
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-### <a id="-pscodepattern">**`-PSCodePattern <String>`**</a>
+### <a id="-command">**`-Command <>`**</a>
+
+<table>
+<tr><td>Type:</td><td></td></tr>
+<tr><td>Mandatory:</td><td>False</td></tr>
+<tr><td>Position:</td><td>Named</td></tr>
+<tr><td>Default value:</td><td></td></tr>
+<tr><td>Accept pipeline input:</td><td></td></tr>
+<tr><td>Accept wildcard characters:</td><td>False</td></tr>
+</table>
+
+### <a id="-pscodepattern">**`-PSCodePattern <>`**</a>
 
 Specifies the PowerShell code pattern used by the get-help cmdlet.
 The native [`Get-Help`] cmdlet automatically adds a PowerShell prompt (`PS \>`) to the first line of an example if not yet exist.
@@ -118,24 +127,26 @@ To be consistent with the first line you might manually add a PowerShell prompt 
 a code block by this `Get-MarkdownHelp` cmdlet.
 
 <table>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
-<tr><td>Position:</td><td>1</td></tr>
+<tr><td>Type:</td><td></td></tr>
+<tr><td>Mandatory:</td><td>False</td></tr>
+<tr><td>Position:</td><td>Named</td></tr>
 <tr><td>Default value:</td><td><code>'PS.*\>'</code></td></tr>
-<tr><td>Accept pipeline input:</td><td>False</td></tr>
+<tr><td>Accept pipeline input:</td><td></td></tr>
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-### <a id="-alternateeol">**`-AlternateEOL <String>`**</a>
+### <a id="-alternateeol">**`-AlternateEOL <>`**</a>
 
 The recommended way to force a line break or new line (`<br>`) in markdown is to end a line with two or more spaces but as that
 might cause an *[Avoid Trailing Whitespace][7]* warning, you might also consider to use an alternate EOL marker.  
 Any alternate EOL marker (at the end of the line) will be replaced by two spaces by this `Get-MarkdownHelp` cmdlet.
 
 <table>
-<tr><td>Type:</td><td><a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a></td></tr>
-<tr><td>Position:</td><td>2</td></tr>
+<tr><td>Type:</td><td></td></tr>
+<tr><td>Mandatory:</td><td>False</td></tr>
+<tr><td>Position:</td><td>Named</td></tr>
 <tr><td>Default value:</td><td><code>'\'</code></td></tr>
-<tr><td>Accept pipeline input:</td><td>False</td></tr>
+<tr><td>Accept pipeline input:</td><td></td></tr>
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 

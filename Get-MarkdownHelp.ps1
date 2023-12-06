@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.1.2
+.VERSION 1.1.3
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -181,18 +181,6 @@ begin {
         }
     }
 
-    function GetContent ($Source) {
-
-            if ($Source -is [AliasInfo]) { $Source = $Source.ResolvedCommand }
-
-            if ($Source -is [Ast])          { $Source.Extent.Text }
-        elseif ($Source -is [ScriptBlock])  { $Source }
-        elseif ($Source -is [CommandInfo])  { $Source.ScriptBlock }
-        elseif ($Source -is [PSModuleInfo]) { Get-Content -Raw -LiteralPath $Source.Path }
-        elseif ($Source -is [String])       { Get-Content -Raw -LiteralPath $Source }
-        else   { Throw "Unknown source type: $($Source.PSTypeNames)" }
-    }
-
     function StopError($Exception, $Id = 'IncorrectArgument', $Group = [Management.Automation.ErrorCategory]::SyntaxError, $Object){
         if ($Exception -isnot [Exception]) { $Exception = [ArgumentException]$Exception }
         $PSCmdlet.ThrowTerminatingError([System.Management.Automation.ErrorRecord]::new($Exception, $Id, $Group, $Object))
@@ -225,8 +213,6 @@ begin {
                     elseif (!$_) { break }
                 }
             }
-
-
         }
         $Help
     }
@@ -365,109 +351,26 @@ begin {
             $TypeName
         }
     }
-
-    function GetInfo($Command) {
-        if ($Command -is [String] -and !$Command.Contains("`n"))  {
-            if ($Test = Get-Command $Command -ErrorAction SilentlyContinue) { $Command = $Test }
-        }
-        if ($Command -is [ApplicationInfo] -and ($Test = Import-Module $Command.Source -PassThru)) { $Command = $Test }
-        if ($Command -and ($Test = Get-Module  $Command -ErrorAction SilentlyContinue)) { $Command = $Test }
-        if ($Command -is [AliasInfo]) { $Command = $Command.ResolvedCommand }
-        if ($Command -is [String] -and ($Test = New-Item -Path function:\ -Name 'Unknown' -Value $Command.ScriptBlock -Force -ErrorAction SilentlyContinue)) { $Command = $Test }
-        $Command
-    }
-
 }
 
 process {
-
-    # https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.commandtypes
-
-    # CommandType       Example
-    # -----------       -------
-    # Alias             Get-Command GCI
-    # All
-    # Application       Get-Command .\Test.psm1
-    # Cmdlet            Get-Command Write-Host
-    # Configuration
-    # ExternalScript    Get-Command .\Test.ps1
-    # Filter
-    # Function          New-Item -Path function: -Name $Name -Value $Value
-    # Script            Get-Module PSReadLine
-
-
-    $Source  = GetInfo $Source
-    $Command = GetInfo $Command
-
-    if (!$Source -and $Command) {   # $Source is the actual command container (if exists)
-        $Source = $Command
-        $Command = $Null
-    }
-
-    if ($Source -is [CommandInfo] -and $Source.ModuleName -and !$Command) {
-        $Command = Import-Module $Source.ModuleName -PassThru
-    }
-    elseif ($Command -is [CommandInfo] -and $Command.ModuleName -and !$Command) {
-        $Source = Import-Module $Contact.ModuleName -PassThru
-    }
-
-    if ($Source -and $Command) {
-        if ($Source -is [String] -and $Command -is [CommandInfo]) {
-            . $Command
-            $Source  = GetInfo $Source
-        }
-        elseif ($Command -is [String] -and $Source -is [CommandInfo]) {
-            . $Command
-            $Source  = GetInfo $Source
-        }
-    }
-
-    if ($Source -isnot [PSModuleInfo] -and $Command -is [PSModuleInfo]) {
-        $Source, $Command = $Command, $Source
-        if ($Command -is [String] -and $Source.ExportedFunctions -eq $Command) { $Command = Get-Command $Command }
-    }
-
-    if ($Source -is [PSModuleInfo]) {
-         $ExportedName = $Source.ExportedCommands.Keys
-         if ($Command) {
-            if (-not ($ExportedName -eq $Command)) { StopError "Source command '$Command' doesn't exist" }
-            $Command = $Command, $Source
-        }
+    $File = try { Get-Item $Source } catch { $Null }
+    if (-not $File) { StopError "Cannot find file '$Source'" }
+    $Ast = [Parser]::ParseFile($File.FullName, [ref]$Null, [ref]$Null)
+    $Body = 
+        if ($Command) { $Ast.EndBlock.Statements.where{$_.Name -eq $Command}.Body }
+        elseif ($Ast.ParamBlock) { $Ast }
         else {
-            $Exported = $Source.ExportedCommands.Values.Where{ $_ -is [CommandInfo] }
-            if (!$Exported) { StopError "No exported commands found for $Source" }
-            if ($Exported.Count -eq 1) { $Command = $Exported, $Source }
-            elseif ($ExportedName -eq $Source.Name) { $Command = $Source.ExportedCommands[$Source.Name], $Source }
-            else {
-                Write-Warning "Multiple exported commands found for $Source"
-                $Command = $Source, $Exported[0]
-            }
+            $Function = $Ast.EndBlock.Statements.where{ $_ -is [FunctionDefinitionAst] }
+            if ($Function.Count -eq 1) { $Function.Body }
+            else { $Ast.EndBlock.Statements.where{ $_.name -is $File.BaseName }.Body }
         }
-    }
-    elseif ($Command -is [CommandInfo]) { $Command = $Command, $Source }
-    elseif ($Command) { StopError "Can't find command '$Command'" }
-    else { $Command = $Source } # $Source -isnot [PSModuleInfo]
+    if (-not $Body) { StopError "Cannot find parameters in '$Source'" }
+    $Help = GetHelp $Body
+    if (-not $Help -and $Body.Parent) { $Help = GetHelp $Ast }
+    if (-not $Help) { StopError "Cannot find comment base help in '$Source'" }
 
-    $Help = $Null
-    foreach ($Item in @($Command)) {
-        $Content = GetContent $Item
-        $Help = GetHelp $Content
-        if ($Help) { break }
-    }
-    if (!$Help) { StopError "Can't find comment base help in: $Command" }
-
-#    Write-Debug "Help: [$($Help.PSTypeNames[0])]$Command"
-
-    $Ast = $Null
-    foreach ($Item in @($Command)) {
-        $Content = GetContent $Item
-        $Ast = [Parser]::ParseInput($Content, [ref]$Null, [ref]$Null)
-        if ($Ast.ParamBlock) { break }
-    }
-    if ($ScriptBlockAst) { StopError "Can't find parameter block in: $Command" }
-
-    $Parameters = $Ast.ParamBlock.Parameters
-    $CommonParams = [PSCmdlet]::CommonParameters + [PSCmdlet]::OptionalCommonParameters
+    $Parameters = $Body.ParamBlock.Parameters
     $ParameterSets = [Ordered]@{}
     $Parameters.foreach{
         $Name =  $_.Name.VariablePath.UserPath
@@ -487,7 +390,7 @@ process {
 
     '<!-- markdownlint-disable MD033 -->'
 
-    $Name = if ($Command.Name) { @($Command.Name)[0] } else { 'Unknown' }
+    $Name = if ($Body.Parent.Name) { $Body.Parent.Name } else { $File.BaseName }
     "# $Name"
     ''
     GetMarkDown $Help.Synopsis

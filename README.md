@@ -1,5 +1,5 @@
 <!-- markdownlint-disable MD033 -->
-# Get-MarkdownHelp.ps1
+# Get-MarkdownHelp
 
 Creates a markdown Readme string from the comment based help of a command
 
@@ -19,7 +19,7 @@ Get-MarkdownHelp
 The [Get-MarkdownHelp][1] cmdlet retrieves the [comment-based help][2] and converts it to a Markdown page
 similar to the general online PowerShell help pages (as e.g. [`Get-Content`](https://go.microsoft.com/fwlink/?LinkID=2096490)).  
 Note that this cmdlet *doesn't* support `XML`-based help files, but has a few extra features for the comment-based
-help as opposed to the native [platyPS][3] [`New-MarkdownHelp`](https://github.com/PowerShell/platyPS/blob/master/docs/New-MarkdownHelp.md):
+help as opposed to the native [platyPS][3] [New-MarkdownHelp](#new-markdownhelp):
 
 * **Code Blocks**
 

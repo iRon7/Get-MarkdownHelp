@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.1.3
+.VERSION 1.1.5
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -357,7 +357,7 @@ process {
     $File = try { Get-Item $Source } catch { $Null }
     if (-not $File) { StopError "Cannot find file '$Source'" }
     $Ast = [Parser]::ParseFile($File.FullName, [ref]$Null, [ref]$Null)
-    $Body = 
+    $Body =
         if ($Command) { $Ast.EndBlock.Statements.where{$_.Name -eq $Command}.Body }
         elseif ($Ast.ParamBlock) { $Ast }
         else {
@@ -378,7 +378,7 @@ process {
         foreach ($Value in @($Sets.Argument.Value)) {
             $SetName = if ($Value) { "$Value" } else { '__AllParameterSets' }
              if (!$ParameterSets.Contains($SetName)) { $ParameterSets[$SetName] = [Ordered]@{} }
-            $ParameterSets[$SetName][$Name] = $_ 
+            $ParameterSets[$SetName][$Name] = $_
         }
     }
     foreach ($SetName in $ParameterSets.get_Keys()) {
@@ -398,25 +398,26 @@ process {
     if ($ParameterSets.get_Count()) {
         ''
         '## Syntax'
-        
+
         foreach ($ParameterSet in $ParameterSets.Values) {
             ''
-            '```JavaScript'
-            foreach ($Name in $ParameterSet.get_Keys()) {
-                $Parameter = $ParameterSet[$Name]
+            '```PowerShell'
+            $Name
+            foreach ($Key in $ParameterSet.get_Keys()) {
+                $Parameter = $ParameterSet[$Key]
                 $Type, $Default, $Positional, $Optional = $Null
-                if ($ParameterSet[$Name] -is [ParameterAst]) {
-                    $Name       = "-$Name"
+                if ($ParameterSet[$Key] -is [ParameterAst]) {
+                    $Key       = "-$Key"
                     $Type       = $Parameter.StaticType.Name
                     $Default    = $Parameter.DefaultValue
                     $Positional = $Parameter.Attributes.Position -lt 0
                     $Optional   = !$Parameter.Attributes.NamedArguments.where{ $_.ArgumentName -eq 'Mandatory' }
                 }
-                if (!$Positional -and !$Optional) { $Name = "[$Name]" }
-                if ($Type -and $Type -ne 'SwitchParameter') { $Name += " <$Type>" }
-                if ($Default) { $Name += " = $Default" }
-                if ($Optional) { $Name = "[$Name]" }
-                $Tab + $Name
+                if (!$Positional -and !$Optional) { $Key = "[$Key]" }
+                if ($Type -and $Type -ne 'SwitchParameter') { $Key += " <$Type>" }
+                if ($Default) { $Key += " = $Default" }
+                if ($Optional) { $Key = "[$Key]" }
+                $Tab + $Key
             }
             '```'
         }

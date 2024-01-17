@@ -6,6 +6,7 @@ Creates a markdown Readme string from the comment based help of a command
 ## Syntax
 
 ```JavaScript
+Get-MarkdownHelp
     [-Source <Object>]
     [-Command <Object>]
     [-PSCodePattern <String> = 'PS.*\>']

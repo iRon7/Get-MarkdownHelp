@@ -179,3 +179,5 @@ A (reference to a) command or module
 [4]: https://www.markdownguide.org/extended-syntax/#fenced-code-blocks "Fenced Code Blocks"
 [5]: https://www.markdownguide.org/basic-syntax/#reference-style-links "Reference-style Links"
 [7]: https://learn.microsoft.com/powershell/utility-modules/psscriptanalyzer/rules/avoidtrailingwhitespace ""
+
+[comment]: <> (Created with Get-MarkdownHelp: Install-Script -Name Get-MarkdownHelp)

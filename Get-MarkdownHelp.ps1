@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.1.5
+.VERSION 1.1.6
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -435,12 +435,12 @@ process {
         '## Examples'
 
         for ($i = 0; $i -lt $Help.Example.Count; $i++) {
-            $Count = $Help.Example[$i].Count
-            if ($Count -gt 1 -and $Help.Example[$i][0].Text.StartsWith('#')) {
+            $MarkDown = GetMarkDown $Help.Example[$i]
+            if ($Help.Example[$i].Count -and $Help.Example[$i][0].Text.StartsWith('#')) {
                 ''
                 "### Example $($i + 1): " + $Help.Example[$i][0].Text.SubString(1).Trim()
                 ''
-                GetMarkDown $Help.Example[$i][1..($Count - 1)]
+                GetMarkDown $Help.Example[$i] | Select-Object -Skip 1
             }
             else {
                 "### Example $($i + 1):"
@@ -537,4 +537,6 @@ process {
             @($LinkRefences).ForEach{ $_ }
         }
     }
+    ''
+    '[comment]: <> (Created with Get-MarkdownHelp: Install-Script -Name Get-MarkdownHelp)'
 }

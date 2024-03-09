@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.1.6
+.VERSION 1.1.7
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -343,9 +343,8 @@ begin {
     function GetTypeLink($TypeName) {
         $Type = $TypeName -as [Type]
         if ($Type) {
-            $TypeName = $Type.Name
             $TypeUri = 'https://docs.microsoft.com/en-us/dotnet/api/' + $Type.FullName
-            "<a href=""$TypeUri"">$TypeName</a>"
+            "<a href=""$TypeUri"">$($Type.Name)</a>"
         }
         else {
             $TypeName
@@ -475,7 +474,7 @@ process {
             elseif ($Null -ne $Attributes.MaxRange)                                   { $Dictionary['Maximal value']             =  $Attributes.MaxRange }
             if ($Null -ne $Attributes.ScriptBlock)                                    { $Dictionary['Accepted script condition'] =  "<code>$($Attributes.ScriptBlock.ToString().Trim() -Split '\s*[\r?\n]\s*' -Join '; ')</code>" }
             if ($Null -ne $Attributes.ValidValues)                                    { $Dictionary['Accepted values']           =  $Attributes.ValidValues -Join ', ' }
-            $Dictionary['Type'] = GetTypeLink($_.parameterType)
+            $Dictionary['Type'] = GetTypeLink $_.StaticType.Name
             $Dictionary['Mandatory'] = [bool]$Attributes.NamedArguments.where{ $_.ArgumentName -eq 'Mandatory' }
             if ($_.Aliases) { $Dictionary['Aliases'] = $_.Aliases -Join ', ' }
             $Position = if ($Attributes.Position -ge 0) {$Attributes.Position } else { 'Named' }
@@ -485,7 +484,7 @@ process {
             $Dictionary['Position']                   = $Position
             $DefaultValue                             = if ($_.DefaultValue) { "<code>$($_.DefaultValue)</code>" } # https://stackoverflow.com/a/64358608/1701026
             $Dictionary['Default value']              = $DefaultValue
-            $Dictionary['Accept pipeline input']      = $Attributes.ValueFromPipelineByPropertyName
+            $Dictionary['Accept pipeline input']      = [Bool]$Attributes.ValueFromPipelineByPropertyName
             $Globbing = ($_.Attributes.where{$_.TypeName.Name -eq 'SupportsWildcards'}).Count -gt 0
             $Dictionary['Accept wildcard characters'] = $Globbing
             '<table>'

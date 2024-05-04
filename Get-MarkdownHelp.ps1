@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.1.7
+.VERSION 1.1.8
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -452,7 +452,7 @@ process {
 
     if ($Parameters) {
         ''
-        '## Parameter'
+        '## Parameters'
         $Parameters.foreach{
             $Name = $_.Name.VariablePath.UserPath
             $Type = if ($_.StaticType.Name -ne 'SwitchParameter') { " <$($_.StaticType.Name)>" }

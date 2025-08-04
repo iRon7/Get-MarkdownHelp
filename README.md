@@ -27,7 +27,7 @@ To create code blocks, indent every line of the block by at least four spaces or
 The **text indent** is defined by the smallest indent of the current - and the `.SYNOPSIS` section.  
 Code blocks are automatically [fenced][4] for default PowerShell color coding.  
 The usual comment-based help prefix for code (`PS. \>`) might also be used to define a code lines.
-For more details, see the [-PSCodePattern parameter](#-pscodepattern-parameter).
+For more details, see the [-PSCodePattern parameter](#-pscodepattern).
 
 As defined by the standard help interpreter, code blocks (including fenced code blocks) can't include help keywords.
 Meaning (fenced) code blocks will end at the next section defined by `.<help keyword>`.
@@ -181,3 +181,4 @@ A (reference to a) command or module
 [7]: https://learn.microsoft.com/powershell/utility-modules/psscriptanalyzer/rules/avoidtrailingwhitespace ""
 
 [comment]: <> (Created with Get-MarkdownHelp: Install-Script -Name Get-MarkdownHelp)
+

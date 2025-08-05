@@ -141,7 +141,7 @@ a code block by this `Get-MarkdownHelp` cmdlet.
 <tr><td>Accept wildcard characters:</td><td>False</td></tr>
 </table>
 
-### <a id="-alternateeol">**`-AlternateEOL <String>`**</a>
+### `-AlternateEOL <String>`
 
 The recommended way to force a line break or new line (`<br>`) in markdown is to end a line with two or more spaces but as that
 might cause an *[Avoid Trailing Whitespace][7]* warning, you might also consider to use an alternate EOL marker.  
@@ -181,4 +181,5 @@ A (reference to a) command or module
 [7]: https://learn.microsoft.com/powershell/utility-modules/psscriptanalyzer/rules/avoidtrailingwhitespace ""
 
 [comment]: <> (Created with Get-MarkdownHelp: Install-Script -Name Get-MarkdownHelp)
+
 

@@ -67,18 +67,18 @@ listed in the end of the document. The reference will be hidden if the label is 
 
 ### Quick Links
 
-Any phrase existing of a combination alphanumeric characters, spaces, underscores and hyphen characters
-between squared brackets, e.g. `[my link]`) will be automatically linked to the anchor id in the document, e.g.:
-`[my link](#my-link)`.
+Any phrase between squared brackets, e.g. `[my link]`, will be automatically linked to the element where the
+id is defined by the enclosed phrase and converting the consecutive non-word characters to a single hyphen
+(and removing any outer hyphens). In this example: `[my link](#my-link)`
 
 > [!WARNING](#warning)
 > There is no check whether the internal anchor id actually exists.
 
 #### Example links
 
-**Example links** are similar to **Quick Links** but start with a the word "example" followed by the example
-index, e.g.: `[example 1]`, or example caption, e.g.: `[example "Display markdown help"]`. Where the caption is
-identified by converting its consecutive non-word characters to a single hyphen.
+**Example links** are based on **Quick Links** but start with a the word "example" followed by the example
+index (possibly separated by a space) or the word "example" followed by the example caption.
+Where the caption is used to identify the link by converting its consecutive non-word characters to a single hyphen.
 
 **Examples:**
 * `[example 1]` will link to the first ([example 1](#example-1)) in this document
@@ -125,78 +125,78 @@ Get-MarkdownHelp .\MyScript.ps1 | Set-Content .\Readme.md
 
 ## Parameters
 
-### <a id="-path">`-Path <Object>`</a>
+### <a id="-path">`-Path` <a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">&lt;Object&gt;</a></a>
 
 An embedded command that contains the parameters or actual commented help.
 
-| [Parameter](#-path) | -Path |
-| :- | - |
-| Aliases | Source |
-| Type | <a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">Object</a> |
-| Mandatory | True |
-| Position | Named |
-| Default value |  |
-| Accept pipeline input | False |
-| Accept wildcard characters | False |
+```powershell
+Aliases:                    Source
+Value (default):            <None>
+Type:                       [Object]
+Mandatory:                  True
+Position:                   Named
+Accept pipeline input:      False
+Accept wildcard characters: False
+```
 
-### <a id="-scriptblock">`-ScriptBlock <Object>`</a>
+### <a id="-scriptblock">`-ScriptBlock` <a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">&lt;Object&gt;</a></a>
 
 The script content that contains the commented help.
 
-| [Parameter](#-scriptblock) | -ScriptBlock |
-| :- | - |
-| Aliases |  |
-| Type | <a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">Object</a> |
-| Mandatory | True |
-| Position | Named |
-| Default value |  |
-| Accept pipeline input | False |
-| Accept wildcard characters | False |
+```powershell
+Aliases:                    <None>
+Value (default):            <None>
+Type:                       [Object]
+Mandatory:                  True
+Position:                   Named
+Accept pipeline input:      False
+Accept wildcard characters: False
+```
 
-### <a id="-command">`-Command <Object>`</a>
+### <a id="-command">`-Command` <a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">&lt;Object&gt;</a></a>
 
-| [Parameter](#-command) | -Command |
-| :- | - |
-| Aliases |  |
-| Type | <a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">Object</a> |
-| Mandatory | False |
-| Position | Named |
-| Default value |  |
-| Accept pipeline input | False |
-| Accept wildcard characters | False |
+```powershell
+Aliases:                    <None>
+Value (default):            <None>
+Type:                       [Object]
+Mandatory:                  False
+Position:                   Named
+Accept pipeline input:      False
+Accept wildcard characters: False
+```
 
-### <a id="-pscodepattern">`-PSCodePattern <String>`</a>
+### <a id="-pscodepattern">`-PSCodePattern` <a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">&lt;String&gt;</a></a>
 
 Specifies the PowerShell code pattern used by the get-help cmdlet.
 The native [`Get-Help`] cmdlet automatically adds a PowerShell prompt (`PS \>`) to the first line of an example if not yet exist.
 To be consistent with the first line you might manually add a PowerShell prompt to each line of code which will be converted to
 a code block by this `Get-MarkdownHelp` cmdlet.
 
-| [Parameter](#-pscodepattern) | -PSCodePattern |
-| :- | - |
-| Aliases |  |
-| Type | <a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a> |
-| Mandatory | False |
-| Position | Named |
-| Default value | <code>'PS.*\>\s?'</code> |
-| Accept pipeline input | False |
-| Accept wildcard characters | False |
+```powershell
+Aliases:                    <None>
+Value (default):            'PS.*\>\s?'
+Type:                       [String]
+Mandatory:                  False
+Position:                   Named
+Accept pipeline input:      False
+Accept wildcard characters: False
+```
 
-### <a id="-alternateeol">`-AlternateEOL <String>`</a>
+### <a id="-alternateeol">`-AlternateEOL` <a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">&lt;String&gt;</a></a>
 
 The recommended way to force a line break or new line (`<br>`) in markdown is to end a line with two or more spaces but as that
 might cause an *[Avoid Trailing Whitespace][7]* warning, you might also consider to use an alternate EOL marker.  
 Any alternate EOL marker (at the end of the line) will be replaced by two spaces by this `Get-MarkdownHelp` cmdlet.
 
-| [Parameter](#-alternateeol) | -AlternateEOL |
-| :- | - |
-| Aliases |  |
-| Type | <a href="https://docs.microsoft.com/en-us/dotnet/api/System.String">String</a> |
-| Mandatory | False |
-| Position | Named |
-| Default value | <code>'\'</code> |
-| Accept pipeline input | False |
-| Accept wildcard characters | False |
+```powershell
+Aliases:                    <None>
+Value (default):            '\'
+Type:                       [String]
+Mandatory:                  False
+Position:                   Named
+Accept pipeline input:      False
+Accept wildcard characters: False
+```
 
 ## Inputs
 

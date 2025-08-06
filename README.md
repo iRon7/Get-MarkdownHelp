@@ -81,9 +81,9 @@ index, e.g.: `[example 1]`, or example caption, e.g.: `[example "Display markdow
 identified by converting its consecutive non-word characters to a single hyphen.
 
 **Examples:**
-* `[example 1]` will link to the first [example 1](#example-1) in this document
-* `[example 2 with any caption]` will link to the second [example 2 (regardless the caption)](#example-2) in this document
-* `[example "Save markdown help to file"]` will link to the [example "Save markdown help to file"](#example-save-markdown-help-to-file) in this document
+* `[example 1]` will link to the first ([example 1](#example-1)) in this document
+* `[example 2 with any caption]` will link to the second ([example 2 -regardless the caption-](#example-2)) in this document
+* `[example "Save markdown help to file"]` will link to the ([example "Save markdown help to file"](#example-save-markdown-help-to-file)) in this document
 
 #### Parameter Links
 

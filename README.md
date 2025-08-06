@@ -131,10 +131,10 @@ An embedded command that contains the parameters or actual commented help.
 
 ```powershell
 Aliases:                    Source
-Value (default):            <None>
+Value (default):            # None
 Type:                       [Object]
 Mandatory:                  True
-Position:                   Named
+Position:                   # Named
 Accept pipeline input:      False
 Accept wildcard characters: False
 ```
@@ -144,11 +144,11 @@ Accept wildcard characters: False
 The script content that contains the commented help.
 
 ```powershell
-Aliases:                    <None>
-Value (default):            <None>
+Aliases:                    # None
+Value (default):            # None
 Type:                       [Object]
 Mandatory:                  True
-Position:                   Named
+Position:                   # Named
 Accept pipeline input:      False
 Accept wildcard characters: False
 ```
@@ -156,11 +156,11 @@ Accept wildcard characters: False
 ### <a id="-command">`-Command` <a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">&lt;Object&gt;</a></a>
 
 ```powershell
-Aliases:                    <None>
-Value (default):            <None>
+Aliases:                    # None
+Value (default):            # None
 Type:                       [Object]
 Mandatory:                  False
-Position:                   Named
+Position:                   # Named
 Accept pipeline input:      False
 Accept wildcard characters: False
 ```
@@ -173,11 +173,11 @@ To be consistent with the first line you might manually add a PowerShell prompt 
 a code block by this `Get-MarkdownHelp` cmdlet.
 
 ```powershell
-Aliases:                    <None>
+Aliases:                    # None
 Value (default):            'PS.*\>\s?'
 Type:                       [String]
 Mandatory:                  False
-Position:                   Named
+Position:                   # Named
 Accept pipeline input:      False
 Accept wildcard characters: False
 ```
@@ -189,11 +189,11 @@ might cause an *[Avoid Trailing Whitespace][7]* warning, you might also consider
 Any alternate EOL marker (at the end of the line) will be replaced by two spaces by this `Get-MarkdownHelp` cmdlet.
 
 ```powershell
-Aliases:                    <None>
+Aliases:                    # None
 Value (default):            '\'
 Type:                       [String]
 Mandatory:                  False
-Position:                   Named
+Position:                   # Named
 Accept pipeline input:      False
 Accept wildcard characters: False
 ```

@@ -9,18 +9,15 @@ Creates a markdown Readme document from the comment based help of a PowerShell c
 Get-MarkdownHelp
     -Path <Object>
     [-Command <Object>]
+    [-PSCodePattern <String> = 'PS.*\>\s?']
+    [-AlternateEOL <String> = '\']
     [<CommonParameters>]
 ```
 
 ```PowerShell
 Get-MarkdownHelp
-    [-Command <Object>]
     -ScriptBlock <Object>
-    [<CommonParameters>]
-```
-
-```PowerShell
-Get-MarkdownHelp
+    [-Command <Object>]
     [-PSCodePattern <String> = 'PS.*\>\s?']
     [-AlternateEOL <String> = '\']
     [<CommonParameters>]
@@ -130,24 +127,12 @@ Get-MarkdownHelp .\MyScript.ps1 | Set-Content .\Readme.md
 An embedded command that contains the parameters or actual commented help.
 
 ```powershell
-Aliases:                    Source
-Value (default):            # None
+Name:                       -Path
+Aliases:                    -Source
 Type:                       [Object]
+Value (default):            # Undefined
+Parameter sets:             Path
 Mandatory:                  True
-Position:                   # Named
-Accept pipeline input:      False
-Accept wildcard characters: False
-```
-
-### <a id="-command">`-Command` <a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">&lt;Object&gt;</a></a>
-
-The command that contains the commented help.
-
-```powershell
-Aliases:                    # None
-Value (default):            # None
-Type:                       [Object]
-Mandatory:                  False
 Position:                   # Named
 Accept pipeline input:      False
 Accept wildcard characters: False
@@ -158,10 +143,28 @@ Accept wildcard characters: False
 The script content that contains the commented help.
 
 ```powershell
+Name:                       -ScriptBlock
 Aliases:                    # None
-Value (default):            # None
 Type:                       [Object]
+Value (default):            # Undefined
+Parameter sets:             Script
 Mandatory:                  True
+Position:                   # Named
+Accept pipeline input:      False
+Accept wildcard characters: False
+```
+
+### <a id="-command">`-Command` <a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">&lt;Object&gt;</a></a>
+
+A specific command or function contained by the script file of block.
+
+```powershell
+Name:                       -Command
+Aliases:                    # None
+Type:                       [Object]
+Value (default):            # Undefined
+Parameter sets:             # All
+Mandatory:                  False
 Position:                   # Named
 Accept pipeline input:      False
 Accept wildcard characters: False
@@ -175,9 +178,11 @@ To be consistent with the first line you might manually add a PowerShell prompt 
 a code block by this `Get-MarkdownHelp` cmdlet.
 
 ```powershell
+Name:                       -PSCodePattern
 Aliases:                    # None
-Value (default):            'PS.*\>\s?'
 Type:                       [String]
+Value (default):            'PS.*\>\s?'
+Parameter sets:             # All
 Mandatory:                  False
 Position:                   # Named
 Accept pipeline input:      False
@@ -191,9 +196,11 @@ might cause an *[Avoid Trailing Whitespace][7]* warning, you might also consider
 Any alternate EOL marker (at the end of the line) will be replaced by two spaces by this `Get-MarkdownHelp` cmdlet.
 
 ```powershell
+Name:                       -AlternateEOL
 Aliases:                    # None
-Value (default):            '\'
 Type:                       [String]
+Value (default):            '\'
+Parameter sets:             # All
 Mandatory:                  False
 Position:                   # Named
 Accept pipeline input:      False

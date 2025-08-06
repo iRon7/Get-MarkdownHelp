@@ -71,7 +71,7 @@ Any phrase existing of a combination alphanumeric characters, spaces, underscore
 between squared brackets, e.g. `[my link]`) will be automatically linked to the anchor id in the document, e.g.:
 `[my link](#my-link)`.
 
-> [!WARNING](#-warning)
+> [!WARNING](#warning)
 > There is no check whether the internal anchor id actually exists.
 
 #### Example links
@@ -83,7 +83,7 @@ identified by converting its consecutive non-word characters to a single hyphen.
 **Examples:**
 * `[example 1]` will link to the first [example 1](#example-1) in this document
 * `[example 2 with any caption]` will link to the second [example 2 (regardless the caption)](#example-2) in this document
-* `[example "Save markdown help to file"]` will link to the [example "Save markdown help to file"](#example-save-markdown-help-to-file-) in this document
+* `[example "Save markdown help to file"]` will link to the [example "Save markdown help to file"](#example-save-markdown-help-to-file) in this document
 
 #### Parameter Links
 

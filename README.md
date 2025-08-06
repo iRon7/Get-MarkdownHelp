@@ -14,8 +14,8 @@ Get-MarkdownHelp
 
 ```PowerShell
 Get-MarkdownHelp
-    -ScriptBlock <Object>
     [-Command <Object>]
+    -ScriptBlock <Object>
     [<CommonParameters>]
 ```
 
@@ -139,6 +139,20 @@ Accept pipeline input:      False
 Accept wildcard characters: False
 ```
 
+### <a id="-command">`-Command` <a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">&lt;Object&gt;</a></a>
+
+The command that contains the commented help.
+
+```powershell
+Aliases:                    # None
+Value (default):            # None
+Type:                       [Object]
+Mandatory:                  False
+Position:                   # Named
+Accept pipeline input:      False
+Accept wildcard characters: False
+```
+
 ### <a id="-scriptblock">`-ScriptBlock` <a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">&lt;Object&gt;</a></a>
 
 The script content that contains the commented help.
@@ -148,18 +162,6 @@ Aliases:                    # None
 Value (default):            # None
 Type:                       [Object]
 Mandatory:                  True
-Position:                   # Named
-Accept pipeline input:      False
-Accept wildcard characters: False
-```
-
-### <a id="-command">`-Command` <a href="https://docs.microsoft.com/en-us/dotnet/api/System.Object">&lt;Object&gt;</a></a>
-
-```powershell
-Aliases:                    # None
-Value (default):            # None
-Type:                       [Object]
-Mandatory:                  False
 Position:                   # Named
 Accept pipeline input:      False
 Accept wildcard characters: False

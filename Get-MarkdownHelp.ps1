@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.2.0
+.VERSION 1.2.1
 .GUID 19631007-c07a-48b9-8774-fcea5498ddb9
 .AUTHOR iRon
 .COMPANYNAME
@@ -440,6 +440,7 @@ process {
         }
         else { $AllSets.Add($Name) }
     }
+    if ($ParameterSets.Count -eq 0) { $ParameterSets[''] = [Ordered]@{}}
     $Parameters.where{$_.Name.VariablePath.UserPath -in $AllSets}.foreach{
         $Name = $_.Name.VariablePath.UserPath
         if ($Name -in $AllSets) {

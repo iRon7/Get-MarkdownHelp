@@ -59,9 +59,9 @@ listed in the end of the document. The reference will be hidden if the label is 
 
 ### Quick Links
 
-Any phrase between squared brackets, e.g. `[my link]`, will be automatically linked to the element where the
-id is defined by the enclosed phrase and converting the consecutive non-word characters to a single hyphen
-(and removing any outer hyphens). In this example: `[my link](#my-link)`
+Any phrase between squared brackets that starts with a word character, e.g. `[my link]`, will be automatically
+linked to the element where the id is defined by the enclosed phrase and converting the consecutive non-word
+characters to a single hyphen (and removing any outer hyphens). In this example: `[my link](#my-link)`
 
 > [!WARNING]
 > There is no check whether the internal anchor id actually exists.
@@ -305,7 +305,8 @@ begin {
             else {
                 $Command = Get-Command $Label -ErrorAction SilentlyContinue
                 if ($Command.HelpUri) { "[``$Label``]($($Command.HelpUri))" }
-                else { "[$Label](#$(($Label -Replace '\W+', '-').Trim('-').ToLower()))" }
+                elseif ($Label -match '^\w') { "[$Label](#$(($Label -Replace '\W+', '-').Trim('-').ToLower()))" } # Exclude #16 Github alerts
+                else { "[$Label]" } # No link
             }
         }
         $Index = 0
